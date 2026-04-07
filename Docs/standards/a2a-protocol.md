@@ -1,22 +1,4 @@
 
-
-
-Ho analizzato la documentazione ufficiale del protocollo A2A v1.0 tramite il link che hai fornito. Ho individuato diversi errori critici e divergenze nel documento precedente (dovuti al fatto che A2A è uno standard molto preciso, con un suo schema dati rigoroso) e li ho corretti completamente.
-
-Ecco le principali correzioni apportate basate sulla specifica ufficiale:
-1. **Metodi JSON-RPC canonici**: Nello standard A2A, il campo `method` di JSON-RPC non è la funzione o "skill" dell'agente (es. non è `parse_csv`), ma deve essere una delle operazioni astratte del protocollo (es. `SendMessage`, `GetTask`, `ListTasks`).
-2. **Struttura AgentCard**: Aggiornata per rispettare lo standard A2A v1.0. Ora utilizza i campi canonici come `supportedInterfaces`, `skills`, `defaultInputModes` e `capabilities` (es. `streaming`, `pushNotifications`) invece di uno schema custom inventato.
-3. **Risultati e Artifacts**: La specifica impone che l'output del lavoro di un agente non venga inviato come "Messaggio di testo", ma venga inserito nell'oggetto `Task` sotto forma di `Artifact` strutturato.
-4. **Ciclo di vita del Task**: Gli stati sono stati allineati all'enumeratore ufficiale (`TASK_STATE_SUBMITTED`, `TASK_STATE_WORKING`, `TASK_STATE_AUTH_REQUIRED`, `TASK_STATE_COMPLETED`, ecc.).
-5. **JWS Signatures**: Lo standard richiede la firma crittografica dell'AgentCard tramite JSON Web Signature (RFC 7515) previa canonizzazione JCS (RFC 8785). Il documento ora impone questo meccanismo.
-6. **A2A vs MCP**: Aggiunta l'importante distinzione tra A2A e Model Context Protocol (MCP) nella sezione dei pitfall, come indicato nell'appendice della specifica.
-7. **Discriminatore JSON**: Ho rimosso l'anti-pattern del campo `"kind"` per indicare il tipo di dato, allineando il documento alle *breaking changes* della v1.0.
-8. **Link integrato**: La documentazione ufficiale è ora citata nella sezione finale come *Upstream Reference*.
-
-Di seguito trovi il documento completo, formattato in puro testo Markdown (senza l'uso del blocco di codice perimetro ` ```markdown ` così da evitare che si interrompa la copia). Il contenuto rispetta la direttiva ed è esclusivamente in inglese.
-
-***
-
 # SwarmForge A2A Protocol Standard
 **Document ID:** SF-DOC-001
 **Path:** `/docs/standards/a2a-protocol.md`
