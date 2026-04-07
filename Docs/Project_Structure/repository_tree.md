@@ -8,5 +8,6 @@ SwarmForge/
 └── Tools/
     └── project_tree/
         ├── generate_tree.py
+        ├── README.md
         └── setup_hook.py
 ```

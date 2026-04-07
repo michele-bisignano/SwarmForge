@@ -25,3 +25,12 @@ To guarantee the long-term maintainability, commercial viability, and security o
 *   🇬🇧 **Strictly English:** All source code, variable names, function names, inline comments, commit messages, and external documentation must be rigorously written in **English**. No exceptions.
 *   📝 **Maniacal Documentation (AI-First Code):** Our code is not only read by humans but actively parsed by our AI agents. Clean, modular code is mandatory. Strict enforcement of native documentation standards (e.g., Python Docstrings, JSDoc/TSDoc) is required for *every single* function, class, and module. Code lacking formal documentation will be automatically rejected.
 *   🛡️ **Third-Party Licenses (IP Protection):** Before integrating any framework, tool, or proxy, you must audit its license. To protect our proprietary rights and future commercialization efforts, there is a **strict ban on copyleft/viral licenses** (such as GPL or AGPL). We only allow dependencies that use permissive licenses (e.g., MIT, Apache 2.0, BSD).
+
+## Development
+
+### Repository Structure
+The project structure is automatically documented. You can find the detailed tree in:
+📂 [Docs/Project_Structure/repository_tree.md](Docs/Project_Structure/repository_tree.md)
+
+### Internal Tools
+Documentation for our internal utilities (like the Tree Generator) can be found in the [Tools/](Tools/) directory.
