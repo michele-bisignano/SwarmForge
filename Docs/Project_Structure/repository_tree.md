@@ -1,9 +1,14 @@
 ```text
 SwarmForge/
+├── CREDITS.md
 ├── Docs/
 │   ├── Project_Brief.md
-│   └── Project_Structure/
-│       └── repository_tree.md
+│   ├── Project_Structure/
+│   │   └── repository_tree.md
+│   └── standards/
+│       └── a2a-protocol.md
+├── legal/
+│   └── apache-2.0.txt
 ├── README.md
 └── Tools/
     └── project_tree/
