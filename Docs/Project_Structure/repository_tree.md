@@ -1,0 +1,10 @@
+```text
+SwarmForge/
+├── Docs/
+│   └── Project_Brief.md
+├── README.md
+└── Tools/
+    └── project_tree/
+        ├── generate_tree.py
+        └── setup_hook.py
+```
