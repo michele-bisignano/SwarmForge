@@ -8,6 +8,8 @@ SwarmForge/
 │   ├── Project_Brief.md
 │   ├── Project_Structure/
 │   │   └── repository_tree.md
+│   ├── research/
+│   │   └── mas-landscape-analysis.md
 │   └── standards/
 │       └── a2a-protocol/
 │           ├── a2a-protocol.md
