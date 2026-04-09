@@ -2,6 +2,9 @@
 SwarmForge/
 ├── CREDITS.md
 ├── Docs/
+│   ├── learning/
+│   │   ├── anthropic-skilljar-catalog.md
+│   │   └── README.md
 │   ├── Project_Brief.md
 │   ├── Project_Structure/
 │   │   └── repository_tree.md
