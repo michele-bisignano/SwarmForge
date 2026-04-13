@@ -2,6 +2,8 @@
 SwarmForge/
 ├── CREDITS.md
 ├── Docs/
+│   ├── architecture/
+│   │   └── phase-1-stack.md
 │   ├── learning/
 │   │   ├── anthropic-skilljar-catalog.md
 │   │   └── README.md
