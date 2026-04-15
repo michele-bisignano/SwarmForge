@@ -1,9 +1,13 @@
 ```text
 SwarmForge/
+├── .continue/
+│   ├── mcpServers/
+│   └── rules/
 ├── CREDITS.md
 ├── Docs/
 │   ├── architecture/
-│   │   └── phase-1-stack.md
+│   │   ├── phase-1-stack.md
+│   │   └── phase-2-stack.md
 │   ├── learning/
 │   │   ├── anthropic-skilljar-catalog.md
 │   │   └── README.md
