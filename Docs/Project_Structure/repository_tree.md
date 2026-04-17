@@ -3,6 +3,7 @@ SwarmForge/
 ├── .continue/
 │   ├── mcpServers/
 │   └── rules/
+├── .gitignore
 ├── CREDITS.md
 ├── Docs/
 │   ├── architecture/
@@ -24,6 +25,7 @@ SwarmForge/
 ├── legal/
 │   └── apache-2.0.txt
 ├── README.md
+├── src/
 └── Tools/
     └── project_tree/
         ├── generate_tree.py
