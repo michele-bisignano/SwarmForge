@@ -38,11 +38,6 @@ yarn-error.log*
 *.db-shm
 *.db-wal
 
-# ========================
-# AGENTS (Aider / Cline)
-# ========================
-.aider*
-.cline*
 
 # ========================
 # IDE / OS

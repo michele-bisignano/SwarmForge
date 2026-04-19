@@ -1,8 +1,17 @@
 ```text
 SwarmForge/
-├── .continue/
-│   ├── mcpServers/
-│   └── rules/
+├── .cline/
+│   └── skills/
+│       └── swarmforge-standards/
+│           └── SKILL.md
+├── .clinerules/
+│   ├── 00-vibe-architect.md
+│   ├── 01-token-economy.md
+│   ├── 02-universal-code-standards.md
+│   ├── 03-python-fastapi-standards.md
+│   ├── 04-contract-architect.md
+│   ├── 05-class-coder
+│   └── 05-doc-and-test-pipeline.md
 ├── .gitignore
 ├── CREDITS.md
 ├── Docs/
