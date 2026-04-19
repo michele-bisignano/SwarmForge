@@ -1,17 +1,41 @@
 ```text
 SwarmForge/
-├── .cline/
+├── .agents/
+│   ├── .skill-lock.json
 │   └── skills/
-│       └── swarmforge-standards/
+│       ├── caveman/
+│       │   └── SKILL.md
+│       ├── caveman-commit/
+│       │   └── SKILL.md
+│       ├── caveman-compress/
+│       │   ├── README.md
+│       │   ├── scripts/
+│       │   │   ├── __init__.py
+│       │   │   ├── __main__.py
+│       │   │   ├── benchmark.py
+│       │   │   ├── cli.py
+│       │   │   ├── compress.py
+│       │   │   ├── detect.py
+│       │   │   └── validate.py
+│       │   ├── SECURITY.md
+│       │   └── SKILL.md
+│       ├── caveman-review/
+│       │   └── SKILL.md
+│       ├── class-coder/
+│       │   └── SKILL.md
+│       ├── contract-architect/
+│       │   └── SKILL.md
+│       └── find-skills/
 │           └── SKILL.md
+├── .cline/
 ├── .clinerules/
 │   ├── 00-vibe-architect.md
 │   ├── 01-token-economy.md
 │   ├── 02-universal-code-standards.md
 │   ├── 03-python-fastapi-standards.md
 │   ├── 04-contract-architect.md
-│   ├── 05-class-coder
-│   └── 05-doc-and-test-pipeline.md
+│   ├── 05-class-coder.md
+│   └── 06-doc-and-test-pipeline.md
 ├── .gitignore
 ├── CREDITS.md
 ├── Docs/
