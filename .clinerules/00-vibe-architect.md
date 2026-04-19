@@ -70,6 +70,9 @@ Commits describing *what* without explaining *why* are not acceptable.
 
 `print()` is forbidden in production code. Use the language's native logging facility at the appropriate level.
 
+This includes FastAPI lifecycle hooks, `__init__` methods, and startup events — 
+not only business logic functions.
+
 In Python:
 ```python
 import logging
@@ -114,3 +117,41 @@ Never call provider SDKs directly in business logic. This makes backend swaps re
 API keys and credentials live only in `.env` files that are gitignored before the first commit.
 Always read via environment variables (e.g., `os.getenv()`). Never hardcode. Never commit, even to private repos.
 Commit a `.env.example` with placeholder values as documentation.
+
+---
+
+## Project-Specific Skills — Placement Rules
+
+Do NOT create `.cline/SKILL.md` directly in the `.cline/` root.
+Project skills follow this structure only:
+.cline/skills/[skill-name]/SKILL.md
+
+Do NOT duplicate content already present in global rules into project-level files.
+If a standard is already covered globally, it does not need a local copy.
+
+Global rules location: `~/Documents/Cline/Rules/`
+Project skills location: `.cline/skills/[skill-name]/SKILL.md`
+
+---
+
+## Post-Write Validation
+
+After creating any source file, verify it before marking the task complete:
+1. Run the linter for the current project's language.
+2. Run the language-appropriate import/compile check to verify the module loads without errors.
+3. Scan for duplicate function or class definitions.  Duplicate definitions are silent bugs — the second silently overwrites the first.
+
+Zero errors required before proceeding to the next file.
+
+---
+
+## Makefile — Runtime Invocation
+
+Never use `source venv/bin/activate` in Makefile recipes — it does not persist 
+across recipe lines on any OS and fails on Windows entirely.
+Always invoke the runtime directly:
+
+```makefile
+test:
+    uv run pytest tests/ -v --tb=short
+```

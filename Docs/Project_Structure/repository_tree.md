@@ -34,8 +34,9 @@ SwarmForge/
 │   ├── 02-universal-code-standards.md
 │   ├── 03-python-fastapi-standards.md
 │   ├── 04-contract-architect.md
+│   ├── 04-doc-and-test-pipeline.md
 │   ├── 05-class-coder.md
-│   └── 06-doc-and-test-pipeline.md
+│   └── caveman.md
 ├── .gitignore
 ├── CREDITS.md
 ├── Docs/
@@ -57,8 +58,14 @@ SwarmForge/
 │           └── A2A_Protocol.pdf
 ├── legal/
 │   └── apache-2.0.txt
+├── Makefile
 ├── README.md
+├── scripts/
+│   └── extract_contract_doc.py
 ├── src/
+│   ├── core/
+│   │   └── models.py
+│   └── main.py
 └── Tools/
     └── project_tree/
         ├── generate_tree.py

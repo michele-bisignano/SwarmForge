@@ -151,3 +151,30 @@ async def test_should_raise_503_when_vram_exceeds_threshold():
         response = await client.post("/v1/chat/completions", json=payload)
     assert response.status_code == 503
 ```
+
+---
+
+## FastAPI Lifespan (not on_event)
+`@app.on_event("startup")` and `@app.on_event("shutdown")` are deprecated.
+Always use the lifespan context manager:
+```python
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # startup logic
+    yield
+    # shutdown logic
+
+app = FastAPI(lifespan=lifespan)
+```
+
+---
+
+## Placeholder Dependencies
+Never use `Depends(lambda: None)` or any lambda that returns None as a dependency.
+For Phase 1 stubs, always return a valid typed instance:
+```python
+async def get_current_user() -> UserIdentity:
+    return UserIdentity(user_id="dev-user", role="developer")
+```

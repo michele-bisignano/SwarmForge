@@ -149,3 +149,14 @@ if (retries > 3) ...
 const MAX_AGENT_RETRIES = 3
 if (retries > MAX_AGENT_RETRIES) ...
 ```
+
+---
+
+## No Bare Collection Types
+
+Bare `dict`, `list`, `tuple` without type parameters are forbidden.
+Always parametrize or define a dedicated model:
+
+- `dict` → `dict[str, int]` or a dedicated Pydantic/dataclass model
+- `list` → `list[str]`
+- `tuple` → `tuple[int, str]`
