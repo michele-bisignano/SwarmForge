@@ -38,6 +38,11 @@ SwarmForge/
 │   ├── 05-class-coder.md
 │   └── caveman.md
 ├── .gitignore
+├── .ruff_cache/
+│   ├── .gitignore
+│   ├── 0.15.11/
+│   │   └── 8051445607315972243
+│   └── CACHEDIR.TAG
 ├── CREDITS.md
 ├── Docs/
 │   ├── architecture/
@@ -60,13 +65,9 @@ SwarmForge/
 │   └── apache-2.0.txt
 ├── Makefile
 ├── README.md
-├── scripts/
-│   └── extract_contract_doc.py
-├── src/
-│   ├── core/
-│   │   └── models.py
-│   └── main.py
 └── Tools/
+    ├── griffe/
+    │   └── extract_contract_doc.py
     └── project_tree/
         ├── generate_tree.py
         ├── README.md
