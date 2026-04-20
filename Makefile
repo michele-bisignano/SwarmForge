@@ -3,4 +3,13 @@ griffe-dump:
 		--output docs/api/swarmforge.json \
 		--resolve-aliases
 
-.PHONY: griffe-dump
+install:
+	uv sync
+
+clean:
+	find . -type d -name "__pycache__" -exec rm -rf {} +
+	find . -type f -name "*.pyc" -delete
+	find . -type d -name ".pytest_cache" -exec rm -rf {} +
+	@echo "Pulizia completata."
+
+.PHONY: griffe-dump install clean

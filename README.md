@@ -8,6 +8,22 @@
 
 ---
 
+## 🚀 Quick Start
+
+1. **Prerequisites**:
+   - Ensure [uv](https://github.com/astral-sh/uv) is installed.
+   - Python 3.10+ is required.
+
+2. **Setup**:
+   ```bash
+   # Install dependencies
+   make install
+
+   # Configure environment
+   cp .env.example .env
+   # Edit .env and add your ANTHROPIC_API_KEY
+   ```
+
 ## 📚 Documentation & Onboarding
 
 **STOP!** Before setting up your local environment, opening a pull request, or writing a single line of code, every team member, auditor, or approved co-founder **MUST** read the foundational project document. 

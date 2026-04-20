@@ -45,22 +45,14 @@ def install_hook():
     hook_path = hooks_dir / "pre-commit"
 
     # 3. Content of the bash script
-    # We use a more robust detection: check if the command actually works, not just if it exists.
+    # We use sys.executable to ensure we use the same Python environment that installed the hook.
+    python_path = sys.executable
+    
     hook_content = (
         "#!/bin/sh\n"
         "echo '[HOOK] Checking Python environment...'\n\n"
         
-        "# Detection logic: try py (Windows), then python3 (Mac/Linux), then python\n"
-        "if py -c 'import sys' >/dev/null 2>&1; then\n"
-        "    PY_CMD=py\n"
-        "elif python3 -c 'import sys' >/dev/null 2>&1; then\n"
-        "    PY_CMD=python3\n"
-        "elif python -c 'import sys' >/dev/null 2>&1; then\n"
-        "    PY_CMD=python\n"
-        "else\n"
-        "    echo '[ERROR] Python not found! Please install Python or add it to PATH.'\n"
-        "    exit 1\n"
-        "fi\n\n"
+        f"PY_CMD='{python_path}'\n\n"
         
         "echo \"[HOOK] Using: $PY_CMD\"\n"
         "echo \"[HOOK] Regenerating project tree...\"\n\n"
