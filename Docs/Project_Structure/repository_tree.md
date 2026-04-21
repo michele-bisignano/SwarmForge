@@ -63,8 +63,15 @@ SwarmForge/
 │           └── A2A_Protocol.pdf
 ├── legal/
 │   └── apache-2.0.txt
+├── logs/
+│   └── agent_traces.log
 ├── Makefile
 ├── README.md
+├── requirements.txt
+├── src/
+│   └── openjarvis/
+│       ├── logger.py
+│       └── main.py
 └── Tools/
     ├── griffe/
     │   └── extract_contract_doc.py
