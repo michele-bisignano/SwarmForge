@@ -77,6 +77,11 @@ From Cline's perspective, the orchestrator is just a local OpenAI-compatible end
 | SWE-agent | MIT | ✅ Approved (pending ACI dependency audit) |
 | AG2 / AutoGen sandbox | MIT + Apache 2.0 | ⚠️ BLOCKED — pending transitive license audit |
 
+| MemPalace | MIT | ⏸ Deferred — Phase 4 |
+| Anthropic Agent SDK (Python) | Apache 2.0 | ✅ Approved — Phase 2.B+ |
+| griffe | MIT | ✅ Approved — Phase 1 tooling |
+| ChromaDB | Apache 2.0 | ✅ Approved — Phase 4 dependency |
+
 > **AG2 Policy:** Do not integrate the AG2 sandbox module until a line-by-line
 > audit of its transitive dependencies is complete. The top-level MIT declaration
 > does not guarantee clean transitive licenses.
@@ -87,6 +92,7 @@ From Cline's perspective, the orchestrator is just a local OpenAI-compatible end
 
 Phase 2 is divided into three sequential sub-phases with explicit completion gates.
 A sub-phase does not begin until the previous one meets all its KPIs.
+
 
 ---
 
@@ -138,6 +144,14 @@ Zero Python/infrastructure setup     ← LangGraph boilerplate
 - Programmatic state management and rollback
 - Complex conditional branching logic
 - Loop guard enforcement (must be enforced via prompt/SKILL.md)
+
+
+**Note — ClassCoder isolation pattern:**
+Each Kanban card maps 1:1 to a ClassCoder instance as defined in
+`.cline/skills/class-coder/SKILL.md`. The ContractArchitect skill
+produces the Contract Document before the card is created. Cards
+carry only the contract and griffe doc snippets — never source code
+of other classes.
 
 #### 4.2 Fallback / Advanced Orchestrator — LangGraph
 
@@ -379,6 +393,13 @@ The following are explicitly out of scope for Phase 2:
    from Phase 2 OpenJarvis tracing)
 4. **AG2 sandbox:** blocked pending transitive license audit
 
+5. **Agent memory (MemPalace):** deferred to Phase 4. Each specialist
+   agent gets its own wing and diary. Install only after OpenJarvis
+   trace logging is stable in Phase 2.A — traces become the memory corpus.
+6. **Anthropic Agent SDK:** evaluate as replacement/wrapper for LangGraph
+   in Phase 2.B once the Phase 2.A Kanban orchestration is validated.
+   Supports programmatic subagent spawning with full Claude Code toolset.
+
 ---
 
 ## 6. Dependency on Phase 1 Outputs
@@ -388,7 +409,10 @@ Phase 2 cannot begin until all Phase 1 deliverables are confirmed:
 - [ ] Cline executes 5 autonomous IDE commands (Phase 1 KPI #2)
 - [ ] TTFT < 1.5s confirmed on Gemma 4 API (Phase 1 KPI #1)
 - [ ] OpenJarvis installed and FastAPI server running locally
-- [ ] SKILL.md authored and validated in Cline
+- [ ] Global Cline rules (00–06) active and validated
+- [ ] contract-architect and class-coder skills installed in ~/.cline/skills/
+- [ ] extract_contract_doc.py functional (Tools/griffe/)
+- [ ] griffe-dump Makefile target operational
 
 ---
 
@@ -438,6 +462,46 @@ Phase 2 cannot begin until all Phase 1 deliverables are confirmed:
     → exports to LangGraph Python
     → merged into codebase
 ```
+
+---
+
+---
+
+## 8. Notes — Discoveries from Phase 1 Implementation
+
+> Added April 2026 — do not edit without version bump.
+
+**Token economy under Gemma 4 free tier (15 RPM):**
+Task lists with 10+ sequential fixes in a single session cause context
+accumulation that degrades model output quality. Enforce the 10-file
+threshold rule from `01-token-economy.md` strictly. One fix list per
+session maximum.
+
+**Shell integration on Windows:**
+Cline cannot capture terminal output on Windows without Git Bash as
+default shell. PowerShell 7 path must exist or Git Bash must be set as
+default profile. Document this in onboarding for new contributors.
+
+**Out-of-scope scaffolding risk:**
+Prompts like "set up the project structure" without explicit scope
+constraints cause Cline to generate application code (FastAPI endpoints,
+Pydantic models) that belongs to Phase 2+. Always scope setup prompts
+explicitly: "create only Makefile and Tools/griffe/ — no src/ code."
+
+**griffe extraction pipeline:**
+ClassCoder context isolation is operational. extract_contract_doc.py
+lives in Tools/griffe/. ContractArchitect must run griffe-dump before
+every ClassCoder assignment on a class with an existing implementation.
+
+**MemPalace (github.com/MemPalace/mempalace):**
+Promising for Phase 4 agent memory. MIT license. Local-first, zero API
+calls, 96.6% LongMemEval recall. Benchmark inflated by top_k config —
+real accuracy ~93-94%. Evaluate again at Phase 4 entry gate.
+
+**Anthropic Agent SDK (github.com/anthropics/claude-agent-sdk-python):**
+Supports programmatic subagent spawning, MCP tool integration, and
+taskBudget for token-aware tool pacing. Evaluate as LangGraph alternative
+or complement at Phase 2.B entry gate. Apache 2.0.
 
 ---
 
