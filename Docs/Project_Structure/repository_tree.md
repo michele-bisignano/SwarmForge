@@ -27,7 +27,6 @@ SwarmForge/
 │       │   └── SKILL.md
 │       └── find-skills/
 │           └── SKILL.md
-├── .cline/
 ├── .clinerules/
 │   ├── 00-vibe-architect.md
 │   ├── 01-token-economy.md
@@ -41,7 +40,7 @@ SwarmForge/
 ├── .ruff_cache/
 │   ├── .gitignore
 │   ├── 0.15.11/
-│   │   └── 8051445607315972243
+│   │   └── 1036352103090582641
 │   └── CACHEDIR.TAG
 ├── CREDITS.md
 ├── Docs/
@@ -66,6 +65,11 @@ SwarmForge/
 ├── Makefile
 ├── README.md
 ├── src/
+│   └── openjarvis/
+│       ├── __init__.py
+│       └── agents/
+│           ├── __init__.py
+│           └── base.py
 └── Tools/
     ├── griffe/
     │   └── extract_contract_doc.py
