@@ -27,6 +27,8 @@ SwarmForge/
 │       │   └── SKILL.md
 │       └── find-skills/
 │           └── SKILL.md
+├── .cline/
+│   └── kanban/
 ├── .clinerules/
 │   ├── 00-vibe-architect.md
 │   ├── 01-token-economy.md
@@ -40,16 +42,18 @@ SwarmForge/
 ├── .ruff_cache/
 │   ├── .gitignore
 │   ├── 0.15.11/
-│   │   └── 1036352103090582641
+│   │   └── 8051445607315972243
 │   └── CACHEDIR.TAG
 ├── CREDITS.md
-├── Docs/
+├── docs/
 │   ├── architecture/
 │   │   ├── phase-1-stack.md
 │   │   └── phase-2-stack.md
 │   ├── learning/
 │   │   ├── anthropic-skilljar-catalog.md
 │   │   └── README.md
+│   ├── plans/
+│   │   └── orchestrator-plan.md
 │   ├── Project_Brief.md
 │   ├── Project_Structure/
 │   │   └── repository_tree.md
@@ -70,7 +74,7 @@ SwarmForge/
 │       └── agents/
 │           ├── __init__.py
 │           └── base.py
-└── Tools/
+└── tools/
     ├── griffe/
     │   └── extract_contract_doc.py
     └── project_tree/

@@ -49,7 +49,7 @@ import argparse
 # ==========================================
 
 # The target output path relative to the project root.
-OUTPUT_REL_PATH = Path("Docs/Project_Structure/repository_tree.md")
+OUTPUT_REL_PATH = Path("docs/project_structure/repository_tree.md")
 
 def find_project_root(start_path: Path) -> Path:
     """
