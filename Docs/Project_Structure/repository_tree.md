@@ -47,15 +47,18 @@ SwarmForge/
 ├── CREDITS.md
 ├── docs/
 │   ├── architecture/
+│   │   ├── orchestrator-hierarchy.md
 │   │   ├── phase-1-stack.md
 │   │   └── phase-2-stack.md
+│   ├── contracts/
+│   │   └── SwarmOrchestrator.contract.md
 │   ├── learning/
 │   │   ├── anthropic-skilljar-catalog.md
 │   │   └── README.md
 │   ├── plans/
 │   │   └── orchestrator-plan.md
 │   ├── Project_Brief.md
-│   ├── Project_Structure/
+│   ├── project_structure/
 │   │   └── repository_tree.md
 │   ├── research/
 │   │   └── mas-landscape-analysis.md
@@ -69,11 +72,8 @@ SwarmForge/
 ├── Makefile
 ├── README.md
 ├── src/
-│   └── openjarvis/
-│       ├── __init__.py
-│       └── agents/
-│           ├── __init__.py
-│           └── base.py
+│   └── orchestrator/
+│       └── orchestrator.py
 └── tools/
     ├── griffe/
     │   └── extract_contract_doc.py
