@@ -27,8 +27,6 @@ SwarmForge/
 │       │   └── SKILL.md
 │       └── find-skills/
 │           └── SKILL.md
-├── .cline/
-│   └── kanban/
 ├── .clinerules/
 │   ├── 00-vibe-architect.md
 │   ├── 01-token-economy.md
@@ -39,13 +37,8 @@ SwarmForge/
 │   ├── 05-class-coder.md
 │   └── caveman.md
 ├── .gitignore
-├── .ruff_cache/
-│   ├── .gitignore
-│   ├── 0.15.11/
-│   │   └── 8051445607315972243
-│   └── CACHEDIR.TAG
 ├── CREDITS.md
-├── docs/
+├── Docs/
 │   ├── architecture/
 │   │   ├── orchestrator-hierarchy.md
 │   │   ├── phase-1-stack.md
@@ -58,17 +51,19 @@ SwarmForge/
 │   ├── plans/
 │   │   └── orchestrator-plan.md
 │   ├── Project_Brief.md
-│   ├── project_structure/
+│   ├── Project_Structure/
 │   │   └── repository_tree.md
 │   ├── research/
 │   │   └── mas-landscape-analysis.md
 │   ├── reviews/
 │   │   └── SwarmOrchestrator.review.md
-│   └── standards/
-│       └── a2a-protocol/
-│           ├── a2a-protocol.md
-│           ├── A2A_Protocol.mp4
-│           └── A2A_Protocol.pdf
+│   ├── standards/
+│   │   └── a2a-protocol/
+│   │       ├── a2a-protocol.md
+│   │       ├── A2A_Protocol.mp4
+│   │       └── A2A_Protocol.pdf
+│   └── testing/
+│       └── tier-decisions.md
 ├── legal/
 │   └── apache-2.0.txt
 ├── Makefile
@@ -76,7 +71,7 @@ SwarmForge/
 ├── src/
 │   └── orchestrator/
 │       └── orchestrator.py
-└── tools/
+└── Tools/
     ├── griffe/
     │   └── extract_contract_doc.py
     └── project_tree/
