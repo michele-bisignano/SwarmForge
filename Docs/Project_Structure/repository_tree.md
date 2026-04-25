@@ -39,6 +39,15 @@ SwarmForge/
 │   ├── 05-class-coder.md
 │   └── caveman.md
 ├── .gitignore
+├── .pytest_cache/
+│   ├── .gitignore
+│   ├── CACHEDIR.TAG
+│   ├── README.md
+│   └── v/
+│       └── cache/
+│           ├── lastfailed
+│           ├── nodeids
+│           └── stepwise
 ├── .ruff_cache/
 │   ├── .gitignore
 │   ├── 0.15.11/
@@ -74,19 +83,23 @@ SwarmForge/
 ├── legal/
 │   └── apache-2.0.txt
 ├── Makefile
+├── pyproject.toml
 ├── README.md
 ├── src/
+│   ├── __init__.py
 │   └── orchestrator/
 │       ├── __init__.py
+│       ├── models.py
 │       └── orchestrator.py
 ├── tests/
 │   └── orchestrator/
 │       └── test_orchestrator.py
-└── tools/
-    ├── griffe/
-    │   └── extract_contract_doc.py
-    └── project_tree/
-        ├── generate_tree.py
-        ├── README.md
-        └── setup_hook.py
+├── tools/
+│   ├── griffe/
+│   │   └── extract_contract_doc.py
+│   └── project_tree/
+│       ├── generate_tree.py
+│       ├── README.md
+│       └── setup_hook.py
+└── uv.lock
 ```
