@@ -98,6 +98,7 @@ SwarmForge/
 │   │   └── stubs.py
 │   └── orchestrator/
 │       ├── __init__.py
+│       ├── aggregator.py
 │       ├── decomposer.py
 │       ├── models.py
 │       ├── orchestrator.py
@@ -105,6 +106,7 @@ SwarmForge/
 │       └── selector.py
 ├── tests/
 │   └── orchestrator/
+│       ├── test_aggregator.py
 │       ├── test_orchestrator.py
 │       ├── test_registry.py
 │       └── test_selector.py
