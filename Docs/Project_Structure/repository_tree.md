@@ -27,6 +27,8 @@ SwarmForge/
 │       │   └── SKILL.md
 │       └── find-skills/
 │           └── SKILL.md
+├── .cline/
+│   └── kanban/
 ├── .clinerules/
 │   ├── 00-vibe-architect.md
 │   ├── 01-token-economy.md
@@ -46,13 +48,22 @@ SwarmForge/
 │           ├── lastfailed
 │           ├── nodeids
 │           └── stepwise
+├── .ruff_cache/
+│   ├── .gitignore
+│   ├── 0.15.11/
+│   │   └── 8051445607315972243
+│   └── CACHEDIR.TAG
 ├── CREDITS.md
-├── Docs/
+├── docs/
+│   ├── api/
+│   │   └── swarmforge.json
 │   ├── architecture/
 │   │   ├── orchestrator-hierarchy.md
 │   │   ├── phase-1-stack.md
 │   │   └── phase-2-stack.md
 │   ├── contracts/
+│   │   ├── AbstractAgent.contract.md
+│   │   ├── StubAgents.contract.md
 │   │   └── SwarmOrchestrator.contract.md
 │   ├── learning/
 │   │   ├── anthropic-skilljar-catalog.md
@@ -60,7 +71,7 @@ SwarmForge/
 │   ├── plans/
 │   │   └── orchestrator-plan.md
 │   ├── Project_Brief.md
-│   ├── Project_Structure/
+│   ├── project_structure/
 │   │   └── repository_tree.md
 │   ├── research/
 │   │   └── mas-landscape-analysis.md
@@ -87,7 +98,7 @@ SwarmForge/
 ├── tests/
 │   └── orchestrator/
 │       └── test_orchestrator.py
-├── Tools/
+├── tools/
 │   ├── griffe/
 │   │   └── extract_contract_doc.py
 │   └── project_tree/
