@@ -65,6 +65,7 @@ SwarmForge/
 │   │   ├── AbstractAgent.contract.md
 │   │   ├── AgentRegistry.contract.md
 │   │   ├── AgentSelector.contract.md
+│   │   ├── ClineAgent.contract.md
 │   │   ├── ResultAggregator.contract.md
 │   │   ├── StubAgents.contract.md
 │   │   └── SwarmOrchestrator.contract.md
