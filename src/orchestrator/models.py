@@ -28,7 +28,7 @@ class Subtask(BaseModel):
     """
 
     id: str
-    kind: str
+    kind: str = "generic"
     description: str
     dependencies: list[str] = Field(default_factory=list)
 
