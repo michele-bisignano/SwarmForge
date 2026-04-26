@@ -89,7 +89,7 @@ def extract_snippet(
     with json_path.open(encoding="utf-8") as f:
         api: dict = json.load(f)
 
-    target_class = _find_class(api.get("members", {}), class_name)
+    target_class = _find_class(api, class_name)
     if target_class is None:
         raise KeyError(f"Class '{class_name}' not found in {api_json_path}.")
 
