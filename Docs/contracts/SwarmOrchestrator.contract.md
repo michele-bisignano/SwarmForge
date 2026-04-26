@@ -215,8 +215,8 @@ These three items are tracked here so they are not lost; they should be addresse
 | Tests authored (test-first) | ⏳ verify in `tests/orchestrator/test_orchestrator.py` |
 | Method bodies implemented | ✅ (`5d5f4db feat(orchestrator): implement SwarmOrchestrator workflow coordinator`) |
 | SRP audit | ✅ ~50 lines of logic — well under 150-line threshold |
-| griffe doc snippets regenerated | ❌ — see Outstanding Pipeline Tasks §1–§2 |
-| Tier decision logged | ❌ — see Outstanding Pipeline Tasks §3 |
+| griffe doc snippets regenerated | ✅ — Pipeline tasks 1-2 completed |
+| Tier decision logged | ✅ — Pipeline task 3 logged in `docs/testing/tier-decisions.md` |
 | Contract document (this file) | ✅ — generated retroactively to enable validation |
 
 ---

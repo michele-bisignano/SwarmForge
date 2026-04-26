@@ -1,5 +1,3 @@
-# Tier Decisions Log
-
-| Date | Class | Decision | Reason |
-|------|-------|----------|--------|
-| 2026-04-25 | SwarmOrchestrator | cheap | Wiring logic, no architectural reasoning required. |
+[Date] SwarmOrchestrator — Retry cheap — orchestration is wiring logic; no heavy reasoning required. Cheap-model coverage is sufficient.
+[Date] AbstractAgent — Retry cheap — standard interface definition.
+[Date] StubAgents — Retry cheap — simple canned response implementations.

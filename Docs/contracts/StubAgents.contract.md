@@ -1,5 +1,5 @@
 # Contract: StubAgents
-# File: src/agents/base.py
+# File: src/agents/stubs.py
 
 ## Responsibility
 Provides minimal, concrete implementations (stubs) of the three primary agent types: Architect, Coder, and Reviewer. These stubs fulfill the `AbstractAgent` contract with canned, predictable output for Phase 1 testing before core logic development begins.

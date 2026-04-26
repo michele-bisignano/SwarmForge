@@ -55,8 +55,6 @@ SwarmForge/
 │   └── CACHEDIR.TAG
 ├── CREDITS.md
 ├── docs/
-│   ├── api/
-│   │   └── swarmforge.json
 │   ├── architecture/
 │   │   ├── orchestrator-hierarchy.md
 │   │   ├── phase-1-stack.md
