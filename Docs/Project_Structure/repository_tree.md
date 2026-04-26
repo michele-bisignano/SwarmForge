@@ -25,7 +25,9 @@ SwarmForge/
 │       │   └── SKILL.md
 │       ├── contract-architect/
 │       │   └── SKILL.md
-│       └── find-skills/
+│       ├── find-skills/
+│       │   └── SKILL.md
+│       └── reviewer/
 │           └── SKILL.md
 ├── .cline/
 │   └── kanban/
@@ -78,6 +80,7 @@ SwarmForge/
 │   │   └── mas-landscape-analysis.md
 │   ├── reviews/
 │   │   └── SwarmOrchestrator.review.md
+│   ├── SF-ONBOARD-001.md
 │   ├── standards/
 │   │   └── a2a-protocol/
 │   │       ├── a2a-protocol.md
