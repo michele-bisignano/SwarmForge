@@ -37,6 +37,13 @@ SwarmForge/
 │   ├── 05-class-coder.md
 │   └── caveman.md
 ├── .gitignore
+├── .pytest_cache/
+│   ├── .gitignore
+│   ├── CACHEDIR.TAG
+│   ├── README.md
+│   └── v/
+│       └── cache/
+│           └── nodeids
 ├── CREDITS.md
 ├── Docs/
 │   ├── architecture/
@@ -81,6 +88,7 @@ SwarmForge/
 │   │   └── stubs.py
 │   └── orchestrator/
 │       ├── __init__.py
+│       ├── aggregator.py
 │       ├── decomposer.py
 │       ├── models.py
 │       ├── orchestrator.py
@@ -88,6 +96,7 @@ SwarmForge/
 │       └── selector.py
 ├── tests/
 │   └── orchestrator/
+│       ├── test_aggregator.py
 │       ├── test_orchestrator.py
 │       ├── test_registry.py
 │       └── test_selector.py
