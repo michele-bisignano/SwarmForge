@@ -27,6 +27,8 @@ SwarmForge/
 │       │   └── SKILL.md
 │       └── find-skills/
 │           └── SKILL.md
+├── .cline/
+│   └── kanban/
 ├── .clinerules/
 │   ├── 00-vibe-architect.md
 │   ├── 01-token-economy.md
@@ -37,8 +39,22 @@ SwarmForge/
 │   ├── 05-class-coder.md
 │   └── caveman.md
 ├── .gitignore
+├── .pytest_cache/
+│   ├── .gitignore
+│   ├── CACHEDIR.TAG
+│   ├── README.md
+│   └── v/
+│       └── cache/
+│           ├── lastfailed
+│           ├── nodeids
+│           └── stepwise
+├── .ruff_cache/
+│   ├── .gitignore
+│   ├── 0.15.11/
+│   │   └── 8051445607315972243
+│   └── CACHEDIR.TAG
 ├── CREDITS.md
-├── Docs/
+├── docs/
 │   ├── architecture/
 │   │   ├── orchestrator-hierarchy.md
 │   │   ├── phase-1-stack.md
@@ -56,7 +72,7 @@ SwarmForge/
 │   ├── plans/
 │   │   └── orchestrator-plan.md
 │   ├── Project_Brief.md
-│   ├── Project_Structure/
+│   ├── project_structure/
 │   │   └── repository_tree.md
 │   ├── research/
 │   │   └── mas-landscape-analysis.md
@@ -71,6 +87,7 @@ SwarmForge/
 │       └── tier-decisions.md
 ├── legal/
 │   └── apache-2.0.txt
+├── main
 ├── Makefile
 ├── pyproject.toml
 ├── README.md
@@ -97,7 +114,7 @@ SwarmForge/
 │       ├── test_orchestrator.py
 │       ├── test_registry.py
 │       └── test_selector.py
-├── Tools/
+├── tools/
 │   ├── griffe/
 │   │   └── extract_contract_doc.py
 │   └── project_tree/

@@ -1,13 +1,19 @@
 ﻿import logging
 import uuid
-
 from typing import TYPE_CHECKING
+
+from src.orchestrator.models import (
+    Subtask,
+    SubtaskResult,
+    SubtaskStatus,
+    SwarmResult,
+    TaskRequest,
+)
 
 if TYPE_CHECKING:
     from src.orchestrator.agents.base import AbstractAgent
     from src.orchestrator.aggregator import AbstractResultAggregator
     from src.orchestrator.decomposer import AbstractTaskDecomposer
-    from src.orchestrator.models import Subtask, SubtaskResult, SwarmResult, TaskRequest
     from src.orchestrator.registry import AgentRegistry
     from src.orchestrator.selector import AbstractAgentSelector
 
@@ -85,9 +91,12 @@ class SwarmOrchestrator:
         try:
             return await agent.run(subtask)
         except Exception as exc:
-            logger.error("Agent execution failed: subtask_id=%s agent=%s error=%s", subtask.id, agent.agent_id(), exc)
-
-            from src.orchestrator.models import SubtaskResult, SubtaskStatus
+            logger.error(
+                "Agent execution failed: subtask_id=%s agent=%s error=%s",
+                subtask.id,
+                agent.agent_id(),
+                exc,
+            )
 
             return SubtaskResult(
                 subtask_id=subtask.id,
