@@ -45,6 +45,8 @@ SwarmForge/
 │   │   └── phase-2-stack.md
 │   ├── contracts/
 │   │   ├── AbstractAgent.contract.md
+│   │   ├── AgentRegistry.contract.md
+│   │   ├── AgentSelector.contract.md
 │   │   ├── StubAgents.contract.md
 │   │   └── SwarmOrchestrator.contract.md
 │   ├── learning/
