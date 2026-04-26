@@ -47,6 +47,7 @@ SwarmForge/
 │   │   ├── AbstractAgent.contract.md
 │   │   ├── AgentRegistry.contract.md
 │   │   ├── AgentSelector.contract.md
+│   │   ├── ResultAggregator.contract.md
 │   │   ├── StubAgents.contract.md
 │   │   └── SwarmOrchestrator.contract.md
 │   ├── learning/
