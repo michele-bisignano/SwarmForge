@@ -79,6 +79,7 @@ SwarmForge/
 │   │   └── stubs.py
 │   └── orchestrator/
 │       ├── __init__.py
+│       ├── decomposer.py
 │       ├── models.py
 │       └── orchestrator.py
 ├── tests/
