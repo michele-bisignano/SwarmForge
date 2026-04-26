@@ -14,6 +14,8 @@ from src.orchestrator.models import (
     SwarmResult,
     TaskRequest,
 )
+import src.orchestrator.orchestrator as orch_module
+orch_module.TaskRequest = TaskRequest
 
 
 # ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -21,7 +23,7 @@ from src.orchestrator.models import (
 
 def make_subtask(sid: str, desc: str = "task") -> Subtask:
     """Canonical valid Subtask for reuse across tests."""
-    return Subtask(id=sid, description=desc)
+    return Subtask(id=sid, kind='default', description=desc)
 
 
 def make_result(
@@ -74,7 +76,7 @@ def aggregator() -> MagicMock:
     """Mock for AbstractResultAggregator."""
     mock = MagicMock()
     mock.aggregate.return_value = SwarmResult(
-        task_id="", final_content="", subtask_results=[],
+        task_id="", final_content="", results=[],
     )
     return mock
 
@@ -159,7 +161,7 @@ class TestRunHappyPath:
         decomposer.decompose.return_value = [subtask]
         agent = make_agent(result=make_result("sub-1"))
         selector.select.return_value = agent
-        final = SwarmResult(task_id="t1", final_content="done", subtask_results=[])
+        final = SwarmResult(task_id="t1", final_content="done", results=[])
         aggregator.aggregate.return_value = final
 
         result = await orch.run("build feature")
@@ -181,14 +183,14 @@ class TestRunHappyPath:
         results = [make_result(f"sub-{i}") for i in (1, 2, 3)]
         selector.select.side_effect = [make_agent(result=r) for r in results]
         aggregator.aggregate.return_value = SwarmResult(
-            task_id="t1", final_content="all done", subtask_results=results,
+            task_id="t1", final_content="all done", results=results,
         )
 
         result = await orch.run("big task")
 
         assert result.final_content == "all done"
         assert aggregator.aggregate.call_count == 1
-        _, (task_id, passed) = aggregator.aggregate.call_args
+        (task_id, passed) = aggregator.aggregate.call_args.args
         assert len(passed) == 3
         assert [r.subtask_id for r in passed] == ["sub-1", "sub-2", "sub-3"]
 
@@ -210,7 +212,7 @@ class TestRunHappyPath:
         ]
         selector.select.side_effect = agents
         aggregator.aggregate.return_value = SwarmResult(
-            task_id="t-mix", final_content="ok", subtask_results=[],
+            task_id="t-mix", final_content="ok", results=[],
         )
 
         await orch.run("full pipeline")
@@ -235,7 +237,7 @@ class TestRunBoundaryErrorPaths:
         decomposer.decompose.return_value = [make_subtask("sub-1")]
         selector.select.return_value = make_agent()
         await orch.run("")
-        _, (req,) = decomposer.decompose.await_args
+        (req,) = decomposer.decompose.await_args.args
         assert isinstance(req, TaskRequest)
         assert req.description == ""
 
@@ -275,14 +277,14 @@ class TestRunBoundaryErrorPaths:
         agent_fail.run = AsyncMock(side_effect=RuntimeError("boom"))
         selector.select.side_effect = [agent_ok, agent_fail]
         aggregator.aggregate.return_value = SwarmResult(
-            task_id="t1", final_content="partial", subtask_results=[],
+            task_id="t1", final_content="partial", results=[],
         )
         caplog.set_level(logging.ERROR)
 
         result = await orch.run("partial fail")
 
         assert result is not None
-        _, (_, passed) = aggregator.aggregate.call_args
+        (_, passed) = aggregator.aggregate.call_args.args
         assert len(passed) == 2
         failed = [r for r in passed if r.status == SubtaskStatus.FAILED]
         assert len(failed) == 1
@@ -303,13 +305,13 @@ class TestRunBoundaryErrorPaths:
             agents.append(ag)
         selector.select.side_effect = agents
         aggregator.aggregate.return_value = SwarmResult(
-            task_id="t1", final_content="all fail", subtask_results=[],
+            task_id="t1", final_content="all fail", results=[],
         )
 
         result = await orch.run("total failure")
 
         assert result is not None
-        _, (_, passed) = aggregator.aggregate.call_args
+        (_, passed) = aggregator.aggregate.call_args.args
         assert all(r.status == SubtaskStatus.FAILED for r in passed)
 
     @pytest.mark.asyncio
@@ -346,9 +348,9 @@ class TestRunInvariants:
         decomposer.decompose.return_value = [make_subtask("s1")]
         captured_ids: list[str] = []
 
-        async def capture(task_id: str, results: list) -> SwarmResult:
+        def capture(task_id: str, results: list) -> SwarmResult:
             captured_ids.append(task_id)
-            return SwarmResult(task_id=task_id, final_content="", subtask_results=[])
+            return SwarmResult(task_id=task_id, final_content="", results=[])
 
         aggregator.aggregate.side_effect = capture
 
@@ -374,7 +376,7 @@ class TestRunInvariants:
 
         selector.select.side_effect = track_select
         aggregator.aggregate.return_value = SwarmResult(
-            task_id="t1", final_content="ok", subtask_results=[],
+            task_id="t1", final_content="ok", results=[],
         )
 
         await orch.run("order test")
@@ -392,10 +394,10 @@ class TestRunInvariants:
         caplog.set_level(logging.INFO)
         captured_task_id: str | None = None
 
-        async def capture(task_id: str, results: list) -> SwarmResult:
+        def capture(task_id: str, results: list) -> SwarmResult:
             nonlocal captured_task_id
             captured_task_id = task_id
-            return SwarmResult(task_id=task_id, final_content="", subtask_results=results)
+            return SwarmResult(task_id=task_id, final_content="", results=results)
 
         aggregator.aggregate.side_effect = capture
 
