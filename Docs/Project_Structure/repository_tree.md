@@ -55,6 +55,11 @@ SwarmForge/
 │   ├── 0.15.11/
 │   │   └── 8051445607315972243
 │   └── CACHEDIR.TAG
+├── configs/
+│   └── agents/
+│       ├── architect.yaml
+│       ├── coder.yaml
+│       └── reviewer.yaml
 ├── CREDITS.md
 ├── docs/
 │   ├── architecture/
@@ -82,6 +87,9 @@ SwarmForge/
 │   ├── reviews/
 │   │   └── SwarmOrchestrator.review.md
 │   ├── SF-ONBOARD-001.md
+│   ├── snippets/
+│   │   ├── abstractagent_snippet.md
+│   │   └── subtask_snippet.md
 │   ├── standards/
 │   │   └── a2a-protocol/
 │   │       ├── a2a-protocol.md
@@ -99,6 +107,8 @@ SwarmForge/
 │   ├── agents/
 │   │   ├── __init__.py
 │   │   ├── base.py
+│   │   ├── cline_agent.py
+│   │   ├── config.py
 │   │   └── stubs.py
 │   └── orchestrator/
 │       ├── __init__.py
@@ -109,6 +119,8 @@ SwarmForge/
 │       ├── registry.py
 │       └── selector.py
 ├── tests/
+│   ├── agents/
+│   │   └── test_cline_agent.py
 │   ├── integration/
 │   │   ├── __init__.py
 │   │   └── test_swarm_integration.py
