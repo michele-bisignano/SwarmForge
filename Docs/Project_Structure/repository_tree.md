@@ -87,7 +87,6 @@ SwarmForge/
 │       └── tier-decisions.md
 ├── legal/
 │   └── apache-2.0.txt
-├── main
 ├── Makefile
 ├── pyproject.toml
 ├── README.md

@@ -11,7 +11,7 @@ from src.orchestrator.models import (
 )
 
 if TYPE_CHECKING:
-    from src.orchestrator.agents.base import AbstractAgent
+    from src.agents.base import AbstractAgent
     from src.orchestrator.aggregator import AbstractResultAggregator
     from src.orchestrator.decomposer import AbstractTaskDecomposer
     from src.orchestrator.registry import AgentRegistry
@@ -83,7 +83,7 @@ class SwarmOrchestrator:
         @param subtask: The subtask to execute.
         @return: SubtaskResult with status OK or FAILED.
         """
-        agent: "AbstractAgent" = self._selector.select(subtask, self._registry)
+        agent: "AbstractAgent | None" = self._selector.select(subtask, self._registry)
         if agent is None:
             logger.error("No agent available for subtask: subtask_id=%s", subtask.id)
             raise ValueError(f"No matching agent for subtask: {subtask.id}")
