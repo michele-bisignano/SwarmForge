@@ -12,7 +12,7 @@ class ArchitectAgent(AbstractAgent):
         """
         self._config = config or {}
 
-    def run(self, subtask: Subtask) -> SubtaskResult:
+    async def run(self, subtask: Subtask) -> SubtaskResult:
         """Returns a pre-defined architectural plan.
 
         @param subtask: The subtask to process.
@@ -57,7 +57,7 @@ class CoderAgent(AbstractAgent):
         """
         self._config = config or {}
 
-    def run(self, subtask: Subtask) -> SubtaskResult:
+    async def run(self, subtask: Subtask) -> SubtaskResult:
         """Returns pre-generated code examples.
 
         @param subtask: The subtask to process.
@@ -102,7 +102,7 @@ class ReviewerAgent(AbstractAgent):
         """
         self._config = config or {}
 
-    def run(self, subtask: Subtask) -> SubtaskResult:
+    async def run(self, subtask: Subtask) -> SubtaskResult:
         """Returns a pre-written review summary.
 
         @param subtask: The subtask to process.

@@ -10,7 +10,7 @@ class AbstractAgent(abc.ABC):
     """
 
     @abc.abstractmethod
-    def run(self, subtask: Subtask) -> SubtaskResult:
+    async def run(self, subtask: Subtask) -> SubtaskResult:
         """Executes the core logic defined by a specific subtask.
 
         Coordinates necessary sub-operations (e.g., planning, coding, reviewing).
