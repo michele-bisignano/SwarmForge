@@ -40,3 +40,8 @@ Provides minimal, concrete implementations (stubs) of the three primary agent ty
 
 ## SRP Boundary
 This class is responsible solely for satisfying the ABC contract with placeholder data and minimum functionality to allow the orchestrator to pass unit tests.
+
+## Ownership
+- contract: Docs/contracts/StubAgents.contract.md
+- implementation: src/agents/stubs.py
+- responsible_contract: Docs/contracts/StubAgents.contract.md

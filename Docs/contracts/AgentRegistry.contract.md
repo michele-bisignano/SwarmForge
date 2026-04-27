@@ -42,3 +42,8 @@ Stop and escalate if implementation exceeds ~50 lines of logic (excl. docstrings
 - Filtering by capability (no match/empty result)
 - Test-first enabled: YES
 - Model tier: cheap — registry logic is simple container management.
+
+## Ownership
+- contract: Docs/contracts/AgentRegistry.contract.md
+- implementation: src/orchestrator/registry.py
+- responsible_contract: Docs/contracts/AgentRegistry.contract.md

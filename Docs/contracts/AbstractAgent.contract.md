@@ -42,3 +42,8 @@ Defines the foundational contract and common interface for all specialized, capa
 
 ## SRP Boundary
 The class is strictly limited to defining the *interface* and common methods; core business logic must be implemented in concrete subclasses.
+
+## Ownership
+- contract: Docs/contracts/AbstractAgent.contract.md
+- implementation: src/agents/base.py
+- responsible_contract: Docs/contracts/AbstractAgent.contract.md

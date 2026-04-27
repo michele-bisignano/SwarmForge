@@ -224,3 +224,8 @@ These three items are tracked here so they are not lost; they should be addresse
 ## Note on Retroactive Authoring
 
 This contract was authored **after** the implementation in commit `5d5f4db`. The expected workflow is contract-first; this cycle inverted it under operational pressure. The contract has been written against the **actual implementation** and verified to match it (see `src/orchestrator/orchestrator.py` lines 17–98). Any future drift between this document and the source must be reconciled by regenerating one or the other — the source of truth for *behavior* is the test suite; the source of truth for *intent* is this contract.
+
+## Ownership
+- contract: Docs/contracts/SwarmOrchestrator.contract.md
+- implementation: src/orchestrator/orchestrator.py
+- responsible_contract: Docs/contracts/SwarmOrchestrator.contract.md

@@ -268,3 +268,8 @@ this is intentional for provider-agnostic operation.
 | coder config | configs/agents/coder.yaml |
 | reviewer config | configs/agents/reviewer.yaml |
 | New runtime dependency | httpx (MIT) added to pyproject.toml |
+
+## Ownership
+- contract: Docs/contracts/ClineAgent.contract.md
+- implementation: src/agents/cline_agent.py
+- responsible_contract: Docs/contracts/ClineAgent.contract.md

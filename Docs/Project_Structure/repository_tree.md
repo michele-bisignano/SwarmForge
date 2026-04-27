@@ -73,7 +73,8 @@ SwarmForge/
 │   │   ├── ClineAgent.contract.md
 │   │   ├── ResultAggregator.contract.md
 │   │   ├── StubAgents.contract.md
-│   │   └── SwarmOrchestrator.contract.md
+│   │   ├── SwarmOrchestrator.contract.md
+│   │   └── TaskDecomposer.contract.md
 │   ├── learning/
 │   │   ├── anthropic-skilljar-catalog.md
 │   │   └── README.md

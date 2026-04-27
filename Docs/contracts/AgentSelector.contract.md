@@ -36,3 +36,8 @@ Stop and escalate if implementation exceeds ~30 lines of logic (excl. docstrings
 - `CapabilityMatchSelector`: Selection with no matching agents (must return None)
 - Test-first enabled: YES
 - Model tier: cheap — selection logic is simple matching.
+
+## Ownership
+- contract: Docs/contracts/AgentSelector.contract.md
+- implementation: src/orchestrator/selector.py
+- responsible_contract: Docs/contracts/AgentSelector.contract.md

@@ -76,3 +76,8 @@ Aggregate subtask results by concatenating the content of all 'OK' results.
 - Test aggregation with multiple OK results ensuring correct order and newline separation.
 - Test-first enabled: YES
 - Model tier: cheap
+
+## Ownership
+- contract: Docs/contracts/ResultAggregator.contract.md
+- implementation: src/orchestrator/aggregator.py
+- responsible_contract: Docs/contracts/ResultAggregator.contract.md
