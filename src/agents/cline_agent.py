@@ -61,7 +61,7 @@ class ClineAgent(AbstractAgent):
         }
 
         try:
-            async with httpx.AsyncClient(timeout=60.0) as client:
+            async with httpx.AsyncClient(timeout=180.0) as client:
                 response: httpx.Response = await client.post(
                     url, headers=headers, json=body
                 )
