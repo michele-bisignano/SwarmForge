@@ -8,9 +8,9 @@ system_prompt: |
   4. Suggested fix
   Also note any Single Responsibility Principle violations — any class
   or function doing more than one thing.
-model: ${REVIEWER_MODEL}
-api_base_url: ${REVIEWER_API_BASE_URL}
-api_key_env_var: REVIEWER_API_KEY
+model: gemma-4-26b-a4b-it
+api_base_url: https://generativelanguage.googleapis.com/v1beta/openai
+api_key_env_var: GOOGLE_AI_STUDIO_API_KEY
 extra_params:
   temperature: 0.2
   max_tokens: 4096

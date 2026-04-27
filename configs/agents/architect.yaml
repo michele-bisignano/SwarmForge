@@ -9,9 +9,8 @@ system_prompt: |
   4. File Structure
   5. Dependencies and Risks
   Be precise. Every component must have a single responsibility.
-model: ${ARCHITECT_MODEL}
-api_base_url: ${ARCHITECT_API_BASE_URL}
-api_key_env_var: ARCHITECT_API_KEY
+model: gemma-4-26b-a4b-it
+api_base_url: https://generativelanguage.googleapis.com/v1beta/openai
+api_key_env_var: GOOGLE_AI_STUDIO_API_KEY
 extra_params:
   temperature: 0.3
-  max_tokens: 4096
