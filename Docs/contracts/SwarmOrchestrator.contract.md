@@ -10,7 +10,7 @@
 
 ## Responsibility
 
-Coordinate the lifecycle of a task — from raw natural-language description to final aggregated `SwarmResult` — by delegating decomposition, agent selection, and result aggregation to injected collaborators.
+Coordinate the lifecycle of a task — from raw natural-language description to final aggregated `SwarmResult` — by delegating decomposition, agent selection, and result aggregation to injected collaborators. Chains output from each successful agent into the next subtask's description so downstream agents receive full execution context.
 
 > One sentence, no "and". The class owns the workflow loop only. Every decision step is delegated.
 
@@ -60,7 +60,20 @@ results into a single SwarmResult.
 3. `await self._decomposer.decompose(request)` to obtain `list[Subtask]`.
 4. **If the decomposer returns an empty list, raise `RuntimeError`.** Log a warning before raising. Do not silently return an empty `SwarmResult`.
 5. Iterate subtasks **sequentially** (Phase 1 — no parallelism). Order is preserved by the decomposer.
-6. For each subtask, delegate to `self._execute_subtask(subtask)` (private helper).
+6. **Maintain `accumulated_context: str = ""` across the loop.**
+   For each subtask:
+   a. Call `self._execute_subtask(subtask, accumulated_context)`.
+   b. Append the result to `results`.
+   c. **If `result.status == SubtaskStatus.OK`**, append to the context chain:
+      ```python
+      accumulated_context += (
+          f"--- {result.agent_id} output ---\n"
+          f"{result.content}\n\n"
+      )
+      ```
+   d. **If `result.status == SubtaskStatus.FAILED`**, do NOT append to context.
+      Failed agent output is excluded — downstream agents receive only
+      successful predecessors' output.
 7. After all subtasks complete (successfully or not), call `self._aggregator.aggregate(task_id, results)` and return its `SwarmResult` directly.
 
 **Logging contract:** Every workflow run emits at minimum:
@@ -73,21 +86,40 @@ Logger name: `__name__` (i.e. `src.orchestrator.orchestrator`). Use module-level
 
 ---
 
-### `async _execute_subtask(subtask: Subtask) -> SubtaskResult` (protected)
+### `async _execute_subtask(subtask: Subtask, accumulated_context: str = "") -> SubtaskResult` (protected)
 
 ```
-"""Execute one subtask: select agent, run, handle errors.
+"""Execute one subtask: enrich with context, select agent, run, handle errors.
 
 @param subtask: The subtask to execute.
+@param accumulated_context: Output from all previously successful subtasks.
+    Empty string for the first subtask. Appended verbatim to the subtask
+    description when non-empty.
 @return: SubtaskResult with status OK or FAILED.
 """
 ```
 
 **Behavioral contract:**
 
-1. Call `self._selector.select(subtask, self._registry)` to obtain an `AbstractAgent`.
+0. **If `accumulated_context` is non-empty, build an enriched Subtask:**
+   ```python
+   enriched = Subtask(
+       id=subtask.id,
+       kind=subtask.kind,
+       description=(
+           f"{subtask.description}\n\n"
+           f"=== Context from previous agents ===\n"
+           f"{accumulated_context}"
+       ),
+       dependencies=subtask.dependencies,
+   )
+   ```
+   If `accumulated_context` is empty, use the original `subtask` as-is.
+   Subtask is a Pydantic model with immutable fields — a new instance is
+   the clean path. No mutation of the original.
+1. Call `self._selector.select(enriched_or_original, self._registry)` to obtain an `AbstractAgent`.
 2. **If selector returns `None`, raise `ValueError`.** Log an error before raising. *(Phase 1 fail-fast policy. Phase 2 may downgrade to `SubtaskStatus.SKIPPED`.)*
-3. Wrap `await agent.run(subtask)` in `try/except Exception`:
+3. Wrap `await agent.run(enriched_or_original)` in `try/except Exception`:
    - On success: return the agent's `SubtaskResult` verbatim.
    - On any exception: log `ERROR` with full context, then return a `SubtaskResult(status=SubtaskStatus.FAILED, content="", error=str(exc))`. **Per-subtask failures must NOT abort the workflow.** Only failures of the workflow infrastructure itself (no subtasks, no agent) propagate.
 
@@ -142,7 +174,7 @@ Logger name: `__name__` (i.e. `src.orchestrator.orchestrator`). Use module-level
 
 **Hard limit:** Stop and escalate if implementation exceeds **~150 lines of logic** (excluding docstrings and blank lines).
 
-**Current implementation status:** ~50 lines of logic. Well within bound.
+**Current implementation status:** ~60 lines of logic. Well within bound.
 
 **Forbidden additions** (would trigger SRP escalation):
 - Inline keyword-based decomposition logic → belongs to `RuleBasedTaskDecomposer`.
@@ -172,6 +204,8 @@ If any of the above is requested, the ClassCoder must issue an SRP Escalation Re
 - ✅ Single-subtask happy path → returns aggregator's `SwarmResult` verbatim.
 - ✅ Three-subtask happy path → all three executed in order; aggregator called once with all three results.
 - ✅ Mixed-kind subtasks (architect + coder + reviewer) → each routed to its matching agent.
+- ✅ Context chaining — first subtask receives empty context; second receives only first agent's output; third receives outputs from both preceding agents (cumulative).
+- ✅ Context chaining — context format matches `"--- {agent_id} output ---\n{content}\n\n"`.
 
 #### `run` — boundary / error paths
 - ✅ Empty `task_description` ("") → forwarded to decomposer as-is; behavior driven by decomposer.
@@ -181,6 +215,7 @@ If any of the above is requested, the ClassCoder must issue an SRP Escalation Re
 - ✅ All agents raise → aggregator still called with full list of FAILED results.
 - ✅ Decomposer raises an exception → propagated as-is (not caught by the orchestrator).
 - ✅ Aggregator raises an exception → propagated as-is.
+- ✅ Failed subtask does NOT contribute to accumulated_context — next agent receives only prior successful outputs.
 
 #### `run` — invariants
 - ✅ `task_id` is a fresh UUID4 on every call — two consecutive calls produce different `task_id` values.
@@ -214,7 +249,7 @@ These three items are tracked here so they are not lost; they should be addresse
 | Skeleton produced | ✅ |
 | Tests authored (test-first) | ⏳ verify in `tests/orchestrator/test_orchestrator.py` |
 | Method bodies implemented | ✅ (`5d5f4db feat(orchestrator): implement SwarmOrchestrator workflow coordinator`) |
-| SRP audit | ✅ ~50 lines of logic — well under 150-line threshold |
+| SRP audit | ✅ ~60 lines of logic — well under 150-line threshold |
 | griffe doc snippets regenerated | ✅ — Pipeline tasks 1-2 completed |
 | Tier decision logged | ✅ — Pipeline task 3 logged in `docs/testing/tier-decisions.md` |
 | Contract document (this file) | ✅ — generated retroactively to enable validation |
