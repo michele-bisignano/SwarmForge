@@ -71,18 +71,41 @@ class SwarmOrchestrator:
         logger.info("Decomposed into %d subtasks: task_id=%s", len(subtasks), task_id)
 
         results: list["SubtaskResult"] = []
+        accumulated_context: str = ""
         for subtask in subtasks:
-            result = await self._execute_subtask(subtask)
+            result = await self._execute_subtask(subtask, accumulated_context)
             results.append(result)
+            if result.status == SubtaskStatus.OK:
+                accumulated_context += (
+                    f"--- {result.agent_id} output ---\n"
+                    f"{result.content}\n\n"
+                )
 
         return self._aggregator.aggregate(task_id, results)
 
-    async def _execute_subtask(self, subtask: "Subtask") -> "SubtaskResult":
-        """Execute one subtask: select agent, run, handle errors.
+    async def _execute_subtask(
+        self, subtask: "Subtask", accumulated_context: str = ""
+    ) -> "SubtaskResult":
+        """Execute one subtask: enrich with context, select agent, run, handle errors.
 
         @param subtask: The subtask to execute.
+        @param accumulated_context: Output from all previously successful subtasks.
+            Empty string for the first subtask. Appended verbatim to the subtask
+            description when non-empty.
         @return: SubtaskResult with status OK or FAILED.
         """
+        if accumulated_context:
+            subtask = Subtask(
+                id=subtask.id,
+                kind=subtask.kind,
+                description=(
+                    f"{subtask.description}\n\n"
+                    f"=== Context from previous agents ===\n"
+                    f"{accumulated_context}"
+                ),
+                dependencies=subtask.dependencies,
+            )
+
         agent: "AbstractAgent | None" = self._selector.select(subtask, self._registry)
         if agent is None:
             logger.error("No agent available for subtask: subtask_id=%s", subtask.id)
