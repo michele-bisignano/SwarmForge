@@ -115,6 +115,7 @@ SwarmForge/
 │       ├── __init__.py
 │       ├── aggregator.py
 │       ├── decomposer.py
+│       ├── factory.py
 │       ├── models.py
 │       ├── orchestrator.py
 │       ├── registry.py
@@ -127,6 +128,7 @@ SwarmForge/
 │   │   └── test_swarm_integration.py
 │   └── orchestrator/
 │       ├── test_aggregator.py
+│       ├── test_factory.py
 │       ├── test_orchestrator.py
 │       ├── test_registry.py
 │       └── test_selector.py
