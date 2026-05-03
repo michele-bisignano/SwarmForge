@@ -1,0 +1,27 @@
+{
+  "conversation_id": "d38f6026-539b-492f-bdc4-b200150945ca",
+  "timestamp": "2026-05-03T15:54:12.551351",
+  "provider": "google_web",
+  "model": "gemini-web-ui",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Scrivi una breve poesia sulla tecnologia in italiano.",
+      "timestamp": "2026-05-03T15:54:12.551351"
+    },
+    {
+      "role": "assistant",
+      "content": "Gemini ha detto\n\nEcco un breve componimento sulla tecnologia e il suo intreccio con la nostra vita:\n\nScintille di Silicio\n\nFili invisibili tessono il mattino,\nun mondo intero sta nel palmo della mano,\ndove il lontano si fa più vicino\ne il tempo corre, veloce e sovrano.\n\nScintille di silicio, sogni di metallo,\nluci che danzano in uno schermo acceso,\nla mente vola senza mai un intervallo,\nin un abbraccio digitale ormai preso.\n\nMa tra i codici e il freddo segnale,\ncerchiamo ancora un battito umano,\nperché l’ingegno resti solo un canale\ne il cuore guidi, con passo lontano.",
+      "timestamp": "2026-05-03T15:54:12.551377"
+    }
+  ],
+  "metadata": {
+    "browser_profile": "/var/folders/9d/6wzdhf552rb5lz9dckjmbyx40000gn/T/playwright_chrome_9gp5i_c9",
+    "start_from_google": true,
+    "processing_time_ms": 12955,
+    "total_tokens": 157,
+    "headless": false,
+    "provider": "google_web",
+    "model": "gemini-web-ui"
+  }
+}

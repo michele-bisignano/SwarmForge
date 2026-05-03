@@ -2,7 +2,7 @@
 import uuid
 
 from typing import TYPE_CHECKING
-
+from src.orchestrator.models import Subtask, SubtaskResult, SwarmResult, TaskRequest
 if TYPE_CHECKING:
     from src.orchestrator.agents.base import AbstractAgent
     from src.orchestrator.aggregator import AbstractResultAggregator

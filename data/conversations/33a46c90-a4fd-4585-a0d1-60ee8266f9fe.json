@@ -1,0 +1,27 @@
+{
+  "conversation_id": "33a46c90-a4fd-4585-a0d1-60ee8266f9fe",
+  "timestamp": "2026-05-03T15:52:05.141083",
+  "provider": "openai_web",
+  "model": "chatgpt-web-ui",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Puoi spiegare meglio?",
+      "timestamp": "2026-05-03T15:52:05.141083"
+    },
+    {
+      "role": "assistant",
+      "content": "Certo! La poesia cerca di esplorare il rapporto tra l'umanità e la tecnologia, mostrando come quest'ultima diventi parte integrante della nostra vita quotidiana. Ogni verso ha una sua sfumatura:\n\n\"Tra fili e schermi che brillano al buio\": Questa immagine fa riferimento alla tecnologia che ci circonda, fat",
+      "timestamp": "2026-05-03T15:52:05.141092"
+    }
+  ],
+  "metadata": {
+    "browser_profile": "/var/folders/9d/6wzdhf552rb5lz9dckjmbyx40000gn/T/playwright_chrome_poidqexm",
+    "start_from_google": false,
+    "processing_time_ms": 1898,
+    "total_tokens": 81,
+    "headless": false,
+    "provider": "openai_web",
+    "model": "chatgpt-web-ui"
+  }
+}
