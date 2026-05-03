@@ -111,6 +111,25 @@ SwarmForge/
 │   │   ├── cline_agent.py
 │   │   ├── config.py
 │   │   └── stubs.py
+│   ├── ai/
+│   │   ├── __init__.py
+│   │   ├── ai_structure.md
+│   │   ├── core/
+│   │   │   ├── __init__.py
+│   │   │   └── ai_model.py
+│   │   ├── image/
+│   │   └── text/
+│   │       ├── __init__.py
+│   │       ├── api/
+│   │       ├── text_model.py
+│   │       └── web/
+│   │           ├── __init__.py
+│   │           ├── providers/
+│   │           │   ├── __init__.py
+│   │           │   ├── chatgpt/
+│   │           │   └── gemini/
+│   │           │       └── __init__.py
+│   │           └── web_text_model.py
 │   └── orchestrator/
 │       ├── __init__.py
 │       ├── aggregator.py
