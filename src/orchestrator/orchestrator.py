@@ -1,6 +1,9 @@
 ﻿import logging
 import uuid
 from typing import TYPE_CHECKING
+<<<<<<< HEAD
+from src.orchestrator.models import Subtask, SubtaskResult, SwarmResult, TaskRequest
+=======
 
 from src.orchestrator.models import (
     Subtask,
@@ -10,6 +13,7 @@ from src.orchestrator.models import (
     TaskRequest,
 )
 
+>>>>>>> 032da50fe25cadf3a963696b1e8f883e078bf4d0
 if TYPE_CHECKING:
     from src.agents.base import AbstractAgent
     from src.orchestrator.aggregator import AbstractResultAggregator

@@ -1,0 +1,27 @@
+{
+  "conversation_id": "393d8781-3b33-43c9-9855-5466c92c3a26",
+  "timestamp": "2026-05-03T15:52:10.210536",
+  "provider": "openai_web",
+  "model": "chatgpt-web-ui",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Scrivi una breve poesia sulla tecnologia in italiano.",
+      "timestamp": "2026-05-03T15:52:10.210536"
+    },
+    {
+      "role": "assistant",
+      "content": "Certo! Ecco una breve poesia sulla tecnologia:\n\nNei fili e negli schermi brilla la luce,\nun mondo distante vicino si seduce.\nBit e pixel",
+      "timestamp": "2026-05-03T15:52:10.210558"
+    }
+  ],
+  "metadata": {
+    "browser_profile": "/var/folders/9d/6wzdhf552rb5lz9dckjmbyx40000gn/T/playwright_chrome_5hpzlni9",
+    "start_from_google": true,
+    "processing_time_ms": 4919,
+    "total_tokens": 47,
+    "headless": false,
+    "provider": "openai_web",
+    "model": "chatgpt-web-ui"
+  }
+}
