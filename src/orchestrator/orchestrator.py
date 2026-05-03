@@ -1,13 +1,23 @@
 ﻿import logging
 import uuid
-
 from typing import TYPE_CHECKING
+<<<<<<< HEAD
 from src.orchestrator.models import Subtask, SubtaskResult, SwarmResult, TaskRequest
+=======
+
+from src.orchestrator.models import (
+    Subtask,
+    SubtaskResult,
+    SubtaskStatus,
+    SwarmResult,
+    TaskRequest,
+)
+
+>>>>>>> 032da50fe25cadf3a963696b1e8f883e078bf4d0
 if TYPE_CHECKING:
-    from src.orchestrator.agents.base import AbstractAgent
+    from src.agents.base import AbstractAgent
     from src.orchestrator.aggregator import AbstractResultAggregator
     from src.orchestrator.decomposer import AbstractTaskDecomposer
-    from src.orchestrator.models import Subtask, SubtaskResult, SwarmResult, TaskRequest
     from src.orchestrator.registry import AgentRegistry
     from src.orchestrator.selector import AbstractAgentSelector
 
@@ -65,19 +75,42 @@ class SwarmOrchestrator:
         logger.info("Decomposed into %d subtasks: task_id=%s", len(subtasks), task_id)
 
         results: list["SubtaskResult"] = []
+        accumulated_context: str = ""
         for subtask in subtasks:
-            result = await self._execute_subtask(subtask)
+            result = await self._execute_subtask(subtask, accumulated_context)
             results.append(result)
+            if result.status == SubtaskStatus.OK:
+                accumulated_context += (
+                    f"--- {result.agent_id} output ---\n"
+                    f"{result.content}\n\n"
+                )
 
         return self._aggregator.aggregate(task_id, results)
 
-    async def _execute_subtask(self, subtask: "Subtask") -> "SubtaskResult":
-        """Execute one subtask: select agent, run, handle errors.
+    async def _execute_subtask(
+        self, subtask: "Subtask", accumulated_context: str = ""
+    ) -> "SubtaskResult":
+        """Execute one subtask: enrich with context, select agent, run, handle errors.
 
         @param subtask: The subtask to execute.
+        @param accumulated_context: Output from all previously successful subtasks.
+            Empty string for the first subtask. Appended verbatim to the subtask
+            description when non-empty.
         @return: SubtaskResult with status OK or FAILED.
         """
-        agent: "AbstractAgent" = self._selector.select(subtask, self._registry)
+        if accumulated_context:
+            subtask = Subtask(
+                id=subtask.id,
+                kind=subtask.kind,
+                description=(
+                    f"{subtask.description}\n\n"
+                    f"=== Context from previous agents ===\n"
+                    f"{accumulated_context}"
+                ),
+                dependencies=subtask.dependencies,
+            )
+
+        agent: "AbstractAgent | None" = self._selector.select(subtask, self._registry)
         if agent is None:
             logger.error("No agent available for subtask: subtask_id=%s", subtask.id)
             raise ValueError(f"No matching agent for subtask: {subtask.id}")
@@ -85,9 +118,12 @@ class SwarmOrchestrator:
         try:
             return await agent.run(subtask)
         except Exception as exc:
-            logger.error("Agent execution failed: subtask_id=%s agent=%s error=%s", subtask.id, agent.agent_id(), exc)
-
-            from src.orchestrator.models import SubtaskResult, SubtaskStatus
+            logger.error(
+                "Agent execution failed: subtask_id=%s agent=%s error=%s",
+                subtask.id,
+                agent.agent_id(),
+                exc,
+            )
 
             return SubtaskResult(
                 subtask_id=subtask.id,

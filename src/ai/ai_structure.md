@@ -109,9 +109,13 @@ ai/
 | **A — Browser automation** | Selenium/Playwright sessions against web UIs (ChatGPT, Claude.ai, etc.) |
 | **B — Session state abstraction** | Stateful multi-turn conversations that persist browser cookies/auth |
 
+<<<<<<< HEAD
 This changes what abstract methods `WebTextModel` must declare. Confirm direction before implementation starts.
 
 
 
 for test: uv run pytest tests/orchestrator/test_web_model.py -s
 results in [root]/[data]/*.json
+=======
+This changes what abstract methods `WebTextModel` must declare. Confirm direction before implementation starts.
+>>>>>>> 032da50fe25cadf3a963696b1e8f883e078bf4d0

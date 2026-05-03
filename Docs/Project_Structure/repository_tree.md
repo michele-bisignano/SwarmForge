@@ -25,8 +25,12 @@ SwarmForge/
 │       │   └── SKILL.md
 │       ├── contract-architect/
 │       │   └── SKILL.md
-│       └── find-skills/
+│       ├── find-skills/
+│       │   └── SKILL.md
+│       └── reviewer/
 │           └── SKILL.md
+├── .cline/
+│   └── kanban/
 ├── .clinerules/
 │   ├── 00-vibe-architect.md
 │   ├── 01-token-economy.md
@@ -46,26 +50,47 @@ SwarmForge/
 │           ├── lastfailed
 │           ├── nodeids
 │           └── stepwise
+├── .ruff_cache/
+│   ├── .gitignore
+│   ├── 0.15.11/
+│   │   └── 8051445607315972243
+│   └── CACHEDIR.TAG
+├── configs/
+│   └── agents/
+│       ├── architect.yaml
+│       ├── coder.yaml
+│       └── reviewer.yaml
 ├── CREDITS.md
-├── Docs/
+├── docs/
 │   ├── architecture/
 │   │   ├── orchestrator-hierarchy.md
 │   │   ├── phase-1-stack.md
 │   │   └── phase-2-stack.md
 │   ├── contracts/
-│   │   └── SwarmOrchestrator.contract.md
+│   │   ├── AbstractAgent.contract.md
+│   │   ├── AgentRegistry.contract.md
+│   │   ├── AgentSelector.contract.md
+│   │   ├── ClineAgent.contract.md
+│   │   ├── ResultAggregator.contract.md
+│   │   ├── StubAgents.contract.md
+│   │   ├── SwarmOrchestrator.contract.md
+│   │   └── TaskDecomposer.contract.md
 │   ├── learning/
 │   │   ├── anthropic-skilljar-catalog.md
 │   │   └── README.md
 │   ├── plans/
 │   │   └── orchestrator-plan.md
 │   ├── Project_Brief.md
-│   ├── Project_Structure/
+│   ├── project_structure/
 │   │   └── repository_tree.md
 │   ├── research/
 │   │   └── mas-landscape-analysis.md
 │   ├── reviews/
 │   │   └── SwarmOrchestrator.review.md
+│   ├── SF-ONBOARD-001.md
+│   ├── snippets/
+│   │   ├── abstractagent_snippet.md
+│   │   └── subtask_snippet.md
 │   ├── standards/
 │   │   └── a2a-protocol/
 │   │       ├── a2a-protocol.md
@@ -80,14 +105,53 @@ SwarmForge/
 ├── README.md
 ├── src/
 │   ├── __init__.py
+│   ├── agents/
+│   │   ├── __init__.py
+│   │   ├── base.py
+│   │   ├── cline_agent.py
+│   │   ├── config.py
+│   │   └── stubs.py
+│   ├── ai/
+│   │   ├── __init__.py
+│   │   ├── ai_structure.md
+│   │   ├── core/
+│   │   │   ├── __init__.py
+│   │   │   └── ai_model.py
+│   │   ├── image/
+│   │   └── text/
+│   │       ├── __init__.py
+│   │       ├── api/
+│   │       ├── text_model.py
+│   │       └── web/
+│   │           ├── __init__.py
+│   │           ├── providers/
+│   │           │   ├── __init__.py
+│   │           │   ├── chatgpt/
+│   │           │   └── gemini/
+│   │           │       └── __init__.py
+│   │           └── web_text_model.py
 │   └── orchestrator/
 │       ├── __init__.py
+│       ├── aggregator.py
+│       ├── decomposer.py
+│       ├── factory.py
 │       ├── models.py
-│       └── orchestrator.py
+│       ├── orchestrator.py
+│       ├── registry.py
+│       └── selector.py
 ├── tests/
+│   ├── agents/
+│   │   └── test_cline_agent.py
+│   ├── integration/
+│   │   ├── __init__.py
+│   │   └── test_swarm_integration.py
 │   └── orchestrator/
-│       └── test_orchestrator.py
-├── Tools/
+│       ├── test_aggregator.py
+│       ├── test_factory.py
+│       ├── test_orchestrator.py
+│       ├── test_registry.py
+│       └── test_selector.py
+├── tools/
 │   ├── griffe/
 │   │   └── extract_contract_doc.py
 │   └── project_tree/

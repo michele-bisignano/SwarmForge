@@ -30,9 +30,10 @@ def make_result(
     sid: str = "s1",
     aid: str = "a1",
     status: SubtaskStatus = SubtaskStatus.OK,
+    content: str = "ok",
 ) -> SubtaskResult:
     """Canonical valid SubtaskResult for reuse across tests."""
-    return SubtaskResult(subtask_id=sid, agent_id=aid, status=status, content="ok")
+    return SubtaskResult(subtask_id=sid, agent_id=aid, status=status, content=content)
 
 
 def make_agent(
@@ -225,6 +226,111 @@ class TestRunHappyPath:
 
 
 # ─── run — boundary / error paths ──────────────────────────────────────────
+
+
+class TestContextChaining:
+
+    @pytest.mark.asyncio
+    async def test_should_pass_empty_context_to_first_subtask(
+        self, orch: SwarmOrchestrator, decomposer: AsyncMock,
+        selector: MagicMock, aggregator: MagicMock,
+    ) -> None:
+        """First subtask receives empty string as accumulated_context."""
+        subs = [make_subtask("s1"), make_subtask("s2")]
+        decomposer.decompose.return_value = subs
+        selector.select.side_effect = [
+            make_agent("a1", make_result("s1", "a1")),
+            make_agent("a2", make_result("s2", "a2")),
+        ]
+        aggregator.aggregate.return_value = SwarmResult(
+            task_id="t1", final_content="ok", results=[],
+        )
+
+        await orch.run("test")
+
+        first_call_subtask = selector.select.call_args_list[0].args[0]
+        assert "=== Context from previous agents ===" not in first_call_subtask.description
+
+    @pytest.mark.asyncio
+    async def test_should_pass_cumulative_context_to_subtasks(
+        self, orch: SwarmOrchestrator, decomposer: AsyncMock,
+        selector: MagicMock, aggregator: MagicMock,
+    ) -> None:
+        """Second subtask receives first agent's output; third receives both preceding."""
+        subs = [make_subtask("s1"), make_subtask("s2"), make_subtask("s3")]
+        decomposer.decompose.return_value = subs
+        selector.select.side_effect = [
+            make_agent("a1", make_result("s1", "a1", content="output-1")),
+            make_agent("a2", make_result("s2", "a2", content="output-2")),
+            make_agent("a3", make_result("s3", "a3", content="output-3")),
+        ]
+        aggregator.aggregate.return_value = SwarmResult(
+            task_id="t1", final_content="ok", results=[],
+        )
+
+        await orch.run("test")
+
+        desc_2 = selector.select.call_args_list[1].args[0].description
+        desc_3 = selector.select.call_args_list[2].args[0].description
+
+        assert "--- a1 output ---" in desc_2
+        assert "output-1" in desc_2
+        assert "--- a2 output ---" not in desc_2  # only predecessor, not self
+
+        assert "--- a1 output ---" in desc_3
+        assert "output-1" in desc_3
+        assert "--- a2 output ---" in desc_3
+        assert "output-2" in desc_3
+
+    @pytest.mark.asyncio
+    async def test_should_format_context_correctly(
+        self, orch: SwarmOrchestrator, decomposer: AsyncMock,
+        selector: MagicMock, aggregator: MagicMock,
+    ) -> None:
+        """Context format matches '--- {agent_id} output ---\\n{content}\\n\\n'."""
+        subs = [make_subtask("s1"), make_subtask("s2")]
+        decomposer.decompose.return_value = subs
+        selector.select.side_effect = [
+            make_agent("arch-1", make_result("s1", "arch-1", content="plan complete")),
+            make_agent("code-1", make_result("s2", "code-1")),
+        ]
+        aggregator.aggregate.return_value = SwarmResult(
+            task_id="t1", final_content="ok", results=[],
+        )
+
+        await orch.run("test")
+
+        desc_2 = selector.select.call_args_list[1].args[0].description
+        assert "--- arch-1 output ---" in desc_2
+        assert "plan complete" in desc_2
+        assert "=== Context from previous agents ===" in desc_2
+
+    @pytest.mark.asyncio
+    async def test_should_exclude_failed_subtask_from_context(
+        self, orch: SwarmOrchestrator, decomposer: AsyncMock,
+        selector: MagicMock, aggregator: MagicMock,
+    ) -> None:
+        """Failed subtask output does NOT appear in accumulated_context for next agent."""
+        subs = [make_subtask("s1"), make_subtask("s2"), make_subtask("s3")]
+        decomposer.decompose.return_value = subs
+        agent_fail = make_agent("fail")
+        agent_fail.run = AsyncMock(side_effect=RuntimeError("boom"))
+        selector.select.side_effect = [
+            make_agent("a1", make_result("s1", "a1", content="good-output")),
+            agent_fail,
+            make_agent("a3", make_result("s3", "a3", content="final")),
+        ]
+        aggregator.aggregate.return_value = SwarmResult(
+            task_id="t1", final_content="partial", results=[],
+        )
+
+        await orch.run("test")
+
+        desc_3 = selector.select.call_args_list[2].args[0].description
+        assert "--- a1 output ---" in desc_3
+        assert "good-output" in desc_3
+        assert "--- fail output ---" not in desc_3
+        assert "boom" not in desc_3
 
 
 class TestRunBoundaryErrorPaths:

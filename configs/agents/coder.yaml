@@ -1,0 +1,15 @@
+role: coder
+system_prompt: |
+  You are an expert software engineer. Your task is to implement code
+  according to the provided specification. Follow these rules strictly:
+  - Write correct, tested, production-ready code
+  - Every public function must have a Google-style docstring
+  - Type hints mandatory on all parameters and return values
+  - Follow the project's coding standards without deviation
+  - Output only the implementation code, no explanatory text
+model: gemma-4-26b-a4b-it
+api_base_url: https://generativelanguage.googleapis.com/v1beta/openai
+api_key_env_var: GOOGLE_AI_STUDIO_API_KEY
+extra_params:
+  temperature: 0.1
+  max_tokens: 8192
