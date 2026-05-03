@@ -65,17 +65,17 @@ The organizational structure is modular, designed to smoothly onboard vetted mem
         *   Time to First Token (TTFT) under 1.5 seconds for local requests.
         *   100% success rate in autonomously executing 5 basic IDE commands.
 
-*   **Phase 2: "The Switchboard" (The Gateway & Network)**
-    *   Establishment of the encrypted virtual network and implementation of the proprietary Gateway/Load Balancer.
+*   **Phase 2: "The Swarm" (Dynamic Multi-Agent Orchestration)**
+    *   Transition to a "Team of Agents" living locally, managed by an orchestration layer that decomposes and delegates subtasks.
+    *   *Success Metrics (KPIs):*
+        *   Autonomous resolution of a complex ticket (modifying at least 3 linked files) via the collaboration of specialized agents (Architect, Coder, Reviewer).
+        *   Zero Out-Of-Memory (OOM) crashes by balancing local vs cloud inference (e.g., local Ollama for fast, low-complexity Reviewer tasks).
+
+*   **Phase 3: "The Switchboard" (The Gateway & Network)**
+    *   Establishment of the encrypted virtual network and implementation of the proprietary Gateway/Load Balancer to distribute the swarm across physical nodes.
     *   *Success Metrics (KPIs):*
         *   Inter-node network latency overhead maintained below 50-80 milliseconds.
         *   The Gateway successfully routes 100% of requests to the correct remote node, completely masking real IPs.
-
-*   **Phase 3: "The Swarm" (Dynamic Multi-Agent Orchestration)**
-    *   Transition to a "Team of Agents" and activation of real-time hardware load balancing.
-    *   *Success Metrics (KPIs):*
-        *   The Load Balancer successfully diverts requests away from any node exceeding 90% VRAM usage, ensuring zero Out-Of-Memory (OOM) crashes.
-        *   Autonomous resolution of a complex ticket (modifying at least 3 linked files) via the collaboration of two agents on two different physical nodes.
 
 *   **Phase 4: "The Forge" (Continual Learning & Fine-tuning)**
     *   Standardization of long-term memory onto portable databases and execution of the first fine-tuning run.
