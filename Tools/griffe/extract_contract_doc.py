@@ -46,11 +46,13 @@ def _format_method(method_name: str, method: dict) -> str:
     """
     docstring: str = method.get("docstring", {}).get("value", "No docstring.")
     params: list = method.get("parameters", [])
-    returns: str = (
-        method.get("returns", {}).get("annotation", "None")
-        if method.get("returns")
-        else "None"
-    )
+    returns_data = method.get("returns")
+    if isinstance(returns_data, dict):
+        returns: str = returns_data.get("annotation", "None")
+    elif isinstance(returns_data, str):
+        returns: str = returns_data
+    else:
+        returns: str = "None"
 
     param_str = ", ".join(
         f"{p['name']}: {p.get('annotation', 'Any')}"

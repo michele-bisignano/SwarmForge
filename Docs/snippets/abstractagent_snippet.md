@@ -31,10 +31,3 @@ Returns a list of generic task types that this agent handles.
 
 @return: A list of strings corresponding to the subtask kinds.
 ```
-
-### `health() -> None`
-```
-Checks the operational status of the agent.
-
-@return: True if the agent is fully operational; False otherwise.
-```
