@@ -15,41 +15,39 @@ class AbstractTaskDecomposer(ABC):
         ...
 
 
+import uuid
+
+
 class RuleBasedTaskDecomposer(AbstractTaskDecomposer):
     """Rule-based implementation of task decomposition."""
 
     async def decompose(self, request: TaskRequest) -> list[Subtask]:
-        """Decompose task based on keywords in description.
+        """Decompose task into a static sequence: Architect -> Coder -> Reviewer.
 
         @param request: The task request.
-        @return: List of subtasks.
+        @return: List of exactly three subtasks in fixed order.
         """
-        parts = [p.strip() for p in request.description.split(". ") if p.strip()]
-        subtasks = []
-        for i, part in enumerate(parts):
-            kind = self._determine_kind(part)
-            dependencies = [f"subtask-{i-1}"] if i > 0 else []
-            subtasks.append(
-                Subtask(
-                    id=f"subtask-{i}",
-                    kind=kind,
-                    description=part,
-                    dependencies=dependencies,
-                )
-            )
-        return subtasks
+        architect_id = str(uuid.uuid4())
+        coder_id = str(uuid.uuid4())
+        reviewer_id = str(uuid.uuid4())
 
-    def _determine_kind(self, description: str) -> str:
-        """Determine subtask kind based on keywords.
-
-        @param description: Subtask description.
-        @return: Kind identifier.
-        """
-        desc = description.lower()
-        if any(k in desc for k in ["code", "implement", "write"]):
-            return "coder"
-        if any(k in desc for k in ["architect", "design", "plan"]):
-            return "architect"
-        if any(k in desc for k in ["review", "check", "validate"]):
-            return "reviewer"
-        return "coder"
+        return [
+            Subtask(
+                id=architect_id,
+                kind="architect",
+                description=request.description,
+                dependencies=[],
+            ),
+            Subtask(
+                id=coder_id,
+                kind="coder",
+                description=request.description,
+                dependencies=[architect_id],
+            ),
+            Subtask(
+                id=reviewer_id,
+                kind="reviewer",
+                description=request.description,
+                dependencies=[coder_id],
+            ),
+        ]
