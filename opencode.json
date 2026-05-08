@@ -1,0 +1,47 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "google/gemini-2.0-flash",
+  "small_model": "google/gemini-2.0-flash",
+  "autoupdate": true,
+  "share": "disabled",
+  "permission": {
+    "bash": "ask",
+    "write": "ask",
+    "edit": "ask"
+  },
+  "instructions": [
+    "memory-bank/productContext.md",
+    "memory-bank/activeContext.md",
+    ".clinerules/00-vibe-architect.md",
+    ".clinerules/01-token-economy.md",
+    ".clinerules/02-universal-code-standards.md",
+    ".clinerules/03-python-fastapi-standards.md",
+    ".clinerules/04-contract-architect.md",
+    ".clinerules/04-doc-and-test-pipeline.md",
+    ".clinerules/05-class-coder.md",
+    ".clinerules/caveman.md"
+  ],
+  "watcher": {
+    "ignore": [
+      ".git/**",
+      "__pycache__/**",
+      "*.pyc",
+      ".pytest_cache/**",
+      ".ruff_cache/**",
+      "uv.lock",
+      "data/conversations/**",
+      "docs/api/**"
+    ]
+  },
+  "formatter": {
+    "ruff-format": {
+      "command": ["uv", "run", "ruff", "format", "$FILE"],
+      "extensions": [".py"]
+    }
+  },
+  "lsp": true,
+  "compaction": {
+    "auto": true,
+    "prune": true
+  }
+}

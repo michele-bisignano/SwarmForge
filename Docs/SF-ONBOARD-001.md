@@ -1,9 +1,9 @@
 # SwarmForge — Developer Onboarding Guide
 **Document ID:** `SF-ONBOARD-001`
-**Version:** 1.0
+**Version:** 2.0
 **Status:** Active
 **Authors:** Michele Bisignano, Alessandro Campani
-**Date:** April 2026
+**Date:** May 2026
 **Audience:** New technical collaborators (NDA required before access)
 
 ---
@@ -15,8 +15,8 @@ AI-assisted development. The goal: a "Private AWS for AI" where a team of
 virtual agents (Architect, Coder, Reviewer) lives natively inside VS Code,
 powered by a decentralized, privately controlled hardware network.
 
-**Current phase:** Phase 2.A — Multi-Agent Orchestration (cloud-only agents).
-The single-agent Phase 1 PoC is complete and validated.
+**Current phase:** Phase 2.B — Real LLM Agents (ClineAgent replacing stubs).
+Phase 2.A multi-agent orchestration is complete and validated (67/67 tests).
 
 **IP notice:** All source code, architecture, prompts, and data are the
 exclusive intellectual property of the founders. You are operating under NDA.
@@ -81,7 +81,7 @@ can be swapped without code changes.
 | Node.js | 18+ | nodejs.org |
 | Git | latest | git-scm.com |
 | VS Code | latest | code.visualstudio.com |
-| Rust + rustup | stable | rustup.rs |
+| OpenCode | latest | `npm install -g opencode-ai@latest` |
 
 ### 3.2 Clone and Install
 
@@ -106,45 +106,109 @@ key at: https://aistudio.google.com
 
 ```bash
 uv run pytest -v
-# Expected: 27 passed
+# Expected: 67 passed
 ```
 
 ---
 
-## 4. VS Code Setup
+## 4. OpenCode Setup
+
+OpenCode is the primary AI coding agent. It runs as a terminal UI (TUI) and
+optionally integrates with VS Code. It is provider-agnostic and reads the
+project's `.clinerules/` files automatically.
 
 ### 4.1 Required Extensions
 
 Install in this order:
 
-1. **Cline** (Apache 2.0) — primary AI agent
+1. **OpenCode** (MIT) — primary AI agent (TUI + VS Code integration)
 2. **GitLens** — Git history and blame
 3. **Ruff** — linting and formatting
 
-### 4.2 Cline Configuration
+### 4.2 OpenCode Configuration
 
+The project config lives in `opencode.json` at the repo root (committed to Git).
+No manual configuration needed — it loads automatically when you run `opencode`
+from the SwarmForge directory.
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "google/gemini-2.0-flash",
+  "share": "disabled",
+  "permission": {
+    "bash": "ask",
+    "write": "ask",
+    "edit": "ask"
+  }
+}
 ```
-Provider:   Google Gemini
-API Key:    [your GOOGLE_AI_STUDIO_API_KEY]
-Model:      gemini-2.0-flash  (free tier, 1000 req/day)
+
+**Key settings:**
+
+| Setting | Value | Why |
+|---|---|---|
+| `share` | `"disabled"` | Proprietary project — no external sharing |
+| `permission.*` | `"ask"` | Agent asks before modifying files or running commands |
+| `instructions` | `.clinerules/**` | All project standards loaded automatically |
+
+**Add your API key to `.env`:**
+
+```env
+GOOGLE_GENERATIVE_AI_API_KEY=your_google_ai_studio_key_here
 ```
 
-**Cline settings (mandatory):**
+OpenCode auto-detects this variable for the Google provider.
 
-```
-Strict Plan Mode:        ON   — no file edits without approved plan
-Checkpoints:             ON   — rollback at every step
-YOLO Mode:               OFF  — strictly forbidden
-Double-Check Completion: ON
-Native Tool Call:        ON
-Auto Compact:            ON
+### 4.3 Launch OpenCode
+
+```bash
+cd C:/Algoritmi/SwarmForge
+opencode
 ```
 
-### 4.3 Cline Rules
+**Essential keybindings:**
 
-The `.clinerules/` folder at the repo root contains the agent's permanent
-briefing. Cline reads these at every session — do not modify them without
-team approval.
+| Key | Action |
+|---|---|
+| `Tab` | Toggle Plan mode ↔ Build mode |
+| `/init` | Regenerate AGENTS.md from codebase |
+| `/undo` | Revert last agent change |
+| `/redo` | Re-apply reverted change |
+| `@filename` | Reference a specific file in prompt |
+| `@agent-name` | Invoke a named agent (e.g. `@contract-architect`) |
+| `Ctrl+C` | Exit |
+
+**Modes:**
+
+- **Plan mode** — read-only analysis. Agent cannot modify files. Use for
+  exploration and planning (equivalent to Cline's Strict Plan Mode).
+- **Build mode** — full access with permission gates. Agent asks before
+  each file write or bash command.
+
+### 4.4 Project Agents
+
+Custom agents live in `.opencode/agents/`. Invoke them with `@agent-name`:
+
+| Agent | Invoke with | Role |
+|---|---|---|
+| `contract-architect` | `@contract-architect` | Designs class hierarchy, produces Contract Documents |
+| `class-coder` | `@class-coder` | Implements one class from a Contract Document |
+| `reviewer` | `@reviewer` | Validates implementation against contract |
+
+### 4.5 Project Memory Bank
+
+`memory-bank/` files load automatically at every session and give the agent
+persistent context about the project state:
+
+| File | Content |
+|---|---|
+| `memory-bank/productContext.md` | Project overview, tech stack, constraints |
+| `memory-bank/activeContext.md` | Current sprint focus (update each session) |
+| `memory-bank/decisionLog.md` | Append-only architectural decisions |
+| `memory-bank/progress.md` | Phase status and todo list |
+
+Update `memory-bank/activeContext.md` at the start of each session.
 
 ---
 
@@ -159,19 +223,35 @@ SwarmForge/
 │   │   ├── decomposer.py       ← AbstractTaskDecomposer + RuleBasedTaskDecomposer
 │   │   ├── registry.py         ← AgentRegistry
 │   │   ├── selector.py         ← AbstractAgentSelector + CapabilityMatchSelector
-│   │   └── aggregator.py       ← AbstractResultAggregator + SequentialResultAggregator
+│   │   ├── aggregator.py       ← AbstractResultAggregator + SequentialResultAggregator
+│   │   └── factory.py          ← SwarmFactory (wires real agents from YAML)
 │   └── agents/
 │       ├── base.py             ← AbstractAgent (ABC)
-│       └── stubs.py            ← ArchitectAgent, CoderAgent, ReviewerAgent (Phase 1 stubs)
+│       ├── config.py           ← AgentConfig (Pydantic v2 value object)
+│       ├── cline_agent.py      ← ClineAgent (real LLM via httpx)
+│       └── stubs.py            ← Phase 1 stubs (kept for testing)
 ├── tests/
-│   ├── orchestrator/           ← Unit tests (27 passing)
-│   └── integration/            ← End-to-end tests
+│   ├── agents/                 ← ClineAgent unit tests (21/21)
+│   ├── orchestrator/           ← Orchestration unit tests (45/45)
+│   └── integration/            ← End-to-end tests (1/1)
+├── configs/agents/             ← YAML configs per agent role
+│   ├── architect.yaml
+│   ├── coder.yaml
+│   └── reviewer.yaml
+├── memory-bank/                ← Persistent agent context (loaded every session)
+│   ├── productContext.md
+│   ├── activeContext.md
+│   ├── decisionLog.md
+│   └── progress.md
 ├── Docs/
 │   ├── architecture/           ← SF-ARCH-001 (Phase 1), SF-ARCH-002 (Phase 2)
 │   ├── contracts/              ← Contract documents per class
 │   ├── plans/                  ← Architect plans
 │   └── reviews/                ← Reviewer reports
-├── .clinerules/                ← Cline agent rules (do not modify without approval)
+├── .clinerules/                ← Agent rules (loaded by OpenCode via instructions)
+├── .opencode/agents/           ← Custom OpenCode agent definitions
+├── opencode.json               ← OpenCode project config (committed)
+├── AGENTS.md                   ← Project rules for OpenCode (committed)
 ├── pyproject.toml              ← Project config, pytest settings
 └── .env.example                ← Environment variables template
 ```
@@ -180,21 +260,21 @@ SwarmForge/
 
 ## 6. Architecture Overview
 
-### 6.1 Current State (Phase 2.A)
+### 6.1 Current State (Phase 2.B)
 
 ```
 Developer
     │
-VS Code + Cline (Gemini Flash)
+VS Code + OpenCode (Google Gemini Flash)
     │
-    ├── Plan Mode: reads repo, proposes plan, STOPS for approval
-    └── Act Mode: executes approved plan, one step at a time
+    ├── Plan mode:  reads repo, proposes plan, STOPS for approval
+    └── Build mode: executes approved plan, one step at a time
 
-Cline Kanban (browser, localhost:3484)
+Custom agents (.opencode/agents/)
     │
-    ├── contract-architect card → produces Contract Document
-    ├── class-coder card        → implements from Contract
-    └── code-reviewer card      → validates implementation
+    ├── @contract-architect  → produces Contract Document
+    ├── @class-coder         → implements from Contract
+    └── @reviewer            → validates implementation
 ```
 
 ### 6.2 Core Data Flow
@@ -212,7 +292,7 @@ list[Subtask]  (kind: "architect" | "coder" | "reviewer")
 CapabilityMatchSelector.select(subtask, registry)
         │
         ▼
-AbstractAgent.run(subtask) → SubtaskResult
+ClineAgent.run(subtask) → SubtaskResult
         │
         ▼  (after all subtasks)
 SequentialResultAggregator.aggregate(task_id, results)
@@ -225,6 +305,7 @@ SwarmResult  (final_content + per-subtask trace)
 
 ```
 AbstractAgent (ABC)                    ← src/agents/base.py
+  ├── ClineAgent (real, Phase 2.B)     ← calls OpenAI-compatible endpoint
   ├── ArchitectAgent (stub, Phase 1)
   ├── CoderAgent (stub, Phase 1)
   └── ReviewerAgent (stub, Phase 1)
@@ -240,6 +321,7 @@ AbstractResultAggregator (ABC)         ← src/orchestrator/aggregator.py
 
 AgentRegistry                          ← src/orchestrator/registry.py
 SwarmOrchestrator                      ← src/orchestrator/orchestrator.py
+SwarmFactory                           ← src/orchestrator/factory.py
 ```
 
 ---
@@ -251,11 +333,11 @@ SwarmOrchestrator                      ← src/orchestrator/orchestrator.py
 Every new module follows this mandatory sequence:
 
 ```
-1. contract-architect  →  Docs/contracts/[Module].contract.md
+1. @contract-architect  →  Docs/contracts/[Module].contract.md
          STOP — wait approval
-2. class-coder         →  src/[path]/[module].py + tests/
+2. @class-coder         →  src/[path]/[module].py + tests/
          STOP — wait approval
-3. code-reviewer       →  Docs/reviews/[Module].review.md
+3. @reviewer            →  Docs/reviews/[Module].review.md
          STOP — wait approval
 4. merge to main
 ```
@@ -280,7 +362,7 @@ refactor(scope): restructure without behavior change
 uv run pytest -v
 
 # Unit tests only
-uv run pytest tests/orchestrator/ -v
+uv run pytest tests/orchestrator/ tests/agents/ -v
 
 # Integration test
 uv run pytest tests/integration/ -v
@@ -299,40 +381,44 @@ uv run ruff format src/ tests/
 
 ---
 
-## 8. What Has Been Built (Phase 2.A Complete)
+## 8. What Has Been Built
 
 | Component | File | Status | Tests |
 |---|---|---|---|
 | Value Objects | `src/orchestrator/models.py` | ✅ Complete | — |
-| SwarmOrchestrator | `src/orchestrator/orchestrator.py` | ✅ Complete | 18/18 |
+| SwarmOrchestrator | `src/orchestrator/orchestrator.py` | ✅ Complete | 22/22 |
 | AbstractAgent + Stubs | `src/agents/base.py`, `stubs.py` | ✅ Complete | — |
+| AgentConfig | `src/agents/config.py` | ✅ Complete | — |
+| ClineAgent | `src/agents/cline_agent.py` | ✅ Complete | 21/21 |
+| SwarmFactory | `src/orchestrator/factory.py` | ✅ Complete | 15/15 |
 | TaskDecomposer | `src/orchestrator/decomposer.py` | ✅ Complete | — |
 | AgentRegistry | `src/orchestrator/registry.py` | ✅ Complete | 3/3 |
 | AgentSelector | `src/orchestrator/selector.py` | ✅ Complete | 2/2 |
 | ResultAggregator | `src/orchestrator/aggregator.py` | ✅ Complete | — |
 | Integration Test | `tests/integration/` | ✅ PASSED | 1/1 |
-| **Total** | | | **27/27** |
+| OpenCode Migration | `opencode.json`, `AGENTS.md` | ✅ Complete | — |
+| Memory Bank | `memory-bank/` | ✅ Complete | — |
+| **Total** | | | **67/67** |
 
 ---
 
-## 9. What Comes Next (Phase 2.B and 2.C)
+## 9. What Comes Next
 
-### Phase 2.B — Real Agents (replace stubs)
-Replace `ArchitectAgent`, `CoderAgent`, `ReviewerAgent` stubs with concrete
-implementations that call Gemini Flash via the Google AI Studio API. Each agent
-receives a subtask and returns a real LLM-generated `SubtaskResult`.
+### Phase 2.B Remaining Tasks
+- Formal integration test with real LLM agents
+- Reviewer cycle: ClineAgent + SwarmFactory
+- License & Credits agent (pip-licenses + auto-generate CREDITS.md)
 
-### Phase 2.C — Local Inference
-Introduce `OllamaAgent` as a local inference alternative for the Reviewer agent,
-running `gemma4:e4b` on the local GPU (8GB VRAM). Seamless failover to cloud
-when rate limit is hit.
+### Phase 2.C — Local Inference (Deferred)
+Introduce `OllamaAgent` as local backend for the Reviewer agent,
+running `gemma4:e4b` on the local GPU (8GB VRAM). Zero code changes —
+only a new `configs/agents/reviewer_local.yaml`.
 
 ### Phase 3 — Second Node (Optional)
 Gateway / Load Balancer introduction. Two physical nodes, mesh VPN, IP masking.
-Hardware: RTX 4060 (8GB VRAM), 28 cores, 16GB RAM.
 
 ### Phase 4 — Fine-Tuning
-Collect interaction logs via OpenJarvis tracing. Normalize to ShareGPT format.
+Collect interaction logs. Normalize to ShareGPT format.
 Fine-tune Gemma 4 with QLoRA via LLaMA-Factory on local hardware.
 
 ---
@@ -342,17 +428,18 @@ Fine-tune Gemma 4 with QLoRA via LLaMA-Factory on local hardware.
 | Tool | License | Role |
 |---|---|---|
 | VS Code | MIT | IDE |
-| Cline | Apache 2.0 | AI agent inside VS Code |
-| Cline Kanban | Apache 2.0 | Multi-agent task orchestration (browser) |
-| Gemini Flash API | Google ToS | Primary AI model (free, cloud) |
-| Ollama | MIT | Local inference runtime |
+| OpenCode | MIT | AI agent — TUI + VS Code integration |
+| Gemini Flash API | Google ToS | OpenCode model (dev assistance) |
+| Gemma 4 26B API | Google ToS | SwarmOrchestrator agents (primary) |
+| Ollama | MIT | Local inference runtime (Phase 2.C+) |
 | gemma4:e4b | Apache 2.0 | Local model (Phase 2.C+) |
-| OpenJarvis | Apache 2.0 | Hardware metrics + trace logging |
 | FastAPI | MIT | Backend framework |
 | SQLite/LibSQL | Public Domain | Database |
 | uv | MIT | Python package manager |
 | ruff | MIT | Linter and formatter |
 | pytest + pytest-asyncio | MIT | Test framework |
+| httpx | MIT | Async HTTP client for ClineAgent |
+| pydantic v2 | MIT | Data validation |
 
 ---
 
@@ -361,6 +448,7 @@ Fine-tune Gemma 4 with QLoRA via LLaMA-Factory on local hardware.
 - **Project Brief:** `Docs/Project_Brief.md`
 - **Phase 1 Architecture:** `Docs/architecture/phase-1-stack.md`
 - **Phase 2 Architecture:** `Docs/architecture/phase-2-stack.md`
+- **OpenCode Migration:** `Docs/SF-TOOLING-MIGRATION.md` (SF-TOOLING-001)
 - **All contracts:** `Docs/contracts/`
 - **Founders:** Michele Bisignano, Alessandro Campani
 

@@ -30,7 +30,6 @@ SwarmForge/
 │       └── reviewer/
 │           └── SKILL.md
 ├── .cline/
-│   └── kanban/
 ├── .clinerules/
 │   ├── 00-vibe-architect.md
 │   ├── 01-token-economy.md
@@ -55,17 +54,25 @@ SwarmForge/
 │   ├── 0.15.11/
 │   │   └── 8051445607315972243
 │   └── CACHEDIR.TAG
+├── AGENTS.md
 ├── configs/
 │   └── agents/
 │       ├── architect.yaml
 │       ├── coder.yaml
 │       └── reviewer.yaml
 ├── CREDITS.md
+├── data/
+│   └── conversations/
+│       ├── 2c689662-d816-46af-b988-86a33871f290.json
+│       ├── 33a46c90-a4fd-4585-a0d1-60ee8266f9fe.json
+│       ├── 393d8781-3b33-43c9-9855-5466c92c3a26.json
+│       └── d38f6026-539b-492f-bdc4-b200150945ca.json
 ├── docs/
 │   ├── architecture/
 │   │   ├── orchestrator-hierarchy.md
 │   │   ├── phase-1-stack.md
-│   │   └── phase-2-stack.md
+│   │   ├── phase-2-stack.md
+│   │   └── web-automation-architecture.md
 │   ├── contracts/
 │   │   ├── AbstractAgent.contract.md
 │   │   ├── AgentRegistry.contract.md
@@ -101,8 +108,15 @@ SwarmForge/
 ├── legal/
 │   └── apache-2.0.txt
 ├── Makefile
+├── memory-bank/
+│   ├── activeContext.md
+│   ├── decisionLog.md
+│   ├── productContext.md
+│   └── progress.md
+├── opencode.json
 ├── pyproject.toml
 ├── README.md
+├── setup_browser_profile.py
 ├── src/
 │   ├── __init__.py
 │   ├── agents/
@@ -124,11 +138,14 @@ SwarmForge/
 │   │       ├── text_model.py
 │   │       └── web/
 │   │           ├── __init__.py
+│   │           ├── conversation_logger.py
 │   │           ├── providers/
 │   │           │   ├── __init__.py
 │   │           │   ├── chatgpt/
+│   │           │   │   └── chatgpt_web_model.py
 │   │           │   └── gemini/
-│   │           │       └── __init__.py
+│   │           │       ├── __init__.py
+│   │           │       └── gemini_web_model.py
 │   │           └── web_text_model.py
 │   └── orchestrator/
 │       ├── __init__.py
@@ -139,6 +156,7 @@ SwarmForge/
 │       ├── orchestrator.py
 │       ├── registry.py
 │       └── selector.py
+├── test_ai_automation.py
 ├── tests/
 │   ├── agents/
 │   │   └── test_cline_agent.py
@@ -150,7 +168,8 @@ SwarmForge/
 │       ├── test_factory.py
 │       ├── test_orchestrator.py
 │       ├── test_registry.py
-│       └── test_selector.py
+│       ├── test_selector.py
+│       └── test_web_model.py
 ├── tools/
 │   ├── griffe/
 │   │   └── extract_contract_doc.py
@@ -158,5 +177,6 @@ SwarmForge/
 │       ├── generate_tree.py
 │       ├── README.md
 │       └── setup_hook.py
-└── uv.lock
+├── uv.lock
+└── web_ai_examples.py
 ```

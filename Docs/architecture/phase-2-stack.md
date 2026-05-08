@@ -1,10 +1,10 @@
 # SwarmForge — Phase 2 Stack Definition
 **Document ID:** `SF-ARCH-002`
 **Codename:** *The Swarm*
-**Version:** 1.3 (Updated — Phase 2.B in progress, todo list added, Superpowers integration planned)
+**Version:** 1.4 (Updated — OpenCode replaces Cline, Memory Bank added)
 **Status:** Phase 2.A ✅ COMPLETE — Phase 2.B 🔄 IN PROGRESS
 **Authors:** Michele Bisignano, Alessandro Campani
-**Date:** April 2026
+**Date:** May 2026
 
 ---
 
@@ -63,8 +63,9 @@ tested, and validated end-to-end. 67/67 unit and integration tests passing.
 ## 3. Phase 2.B — 🔄 IN PROGRESS
 
 ### Goal
-Real LLM-backed agents replacing stubs, with context chaining and
-provider-agnostic configuration via YAML + environment variables.
+Real LLM-backed agents replacing stubs, with context chaining,
+provider-agnostic configuration via YAML + environment variables,
+and OpenCode as the new IDE agent layer.
 
 ### What Has Been Done
 
@@ -76,6 +77,8 @@ provider-agnostic configuration via YAML + environment variables.
 - [x] End-to-end test with real LLM — Gemma 4 26B, 3/3 agents OK
 - [x] `.env` structure — provider keys + per-agent model assignment
 - [x] httpx timeout = 60s (required for Gemma thinking mode)
+- [x] **OpenCode migration** — replaces Cline as IDE agent (MIT, provider-agnostic)
+- [x] **Memory Bank** — persistent context across sessions (`memory-bank/`)
 
 ### What Remains
 
@@ -89,23 +92,6 @@ provider-agnostic configuration via YAML + environment variables.
       - auto-generates `CREDITS.md`
       - runs as git pre-commit hook
 
-#### Superpowers Integration
-Superpowers (github.com/obra/superpowers, MIT) is a composable skills framework
-compatible with our `.clinerules/` system. Integration plan:
-
-- [ ] **Security audit** — manually review each Superpowers skill before importing.
-      `writing-plans` skill flagged HIGH RISK by Mondoo scanner — do not import
-      without line-by-line review. Audit each skill individually.
-- [ ] **Identify compatible skills** — compare Superpowers skill catalog with our
-      `.clinerules/` gaps. Candidates: `brainstorming`, `using-git-worktrees`,
-      `code-reviewer` (if passes audit).
-- [ ] **Import approved skills** — copy audited skills as `.clinerules/` additions.
-      Do NOT use the Superpowers plugin marketplace — import manually to maintain
-      full visibility and control over every instruction given to agents.
-- [ ] **Evaluate subagent-driven-development skill** — this is the most interesting
-      one. It dispatches fresh subagents per task with two-stage review. Evaluate
-      if it can replace or enhance our Cline Kanban workflow.
-
 #### Phase 2.B KPIs (to validate before closing)
 
 | KPI | Target | Status |
@@ -115,6 +101,7 @@ compatible with our `.clinerules/` system. Integration plan:
 | Context chaining verified | Coder uses Architect output | ✅ Validated |
 | TTFT per agent | < 60s (Gemma thinking mode) | ✅ Within timeout |
 | Paid API calls | 0 | ✅ Free tier only |
+| OpenCode migration complete | Cline fully replaced | ✅ Complete |
 
 ---
 
@@ -137,7 +124,7 @@ Reserve for Reviewer agent (low-complexity, high-frequency).
 Keep Architect and Coder on cloud API.
 
 **Implementation:** zero code changes — only a new `configs/agents/reviewer_local.yaml`
-and `OLLAMA_API_KEY=ollama` in `.env`. Architecture is already provider-agnostic.
+and `OLLAMA_API_BASE_URL=http://localhost:11434/v1` in `.env`. Architecture is already provider-agnostic.
 
 ### Phase 2.C KPIs
 
@@ -159,9 +146,12 @@ and `OLLAMA_API_KEY=ollama` in `.env`. Architecture is already provider-agnostic
                           │
 ┌─────────────────────────▼───────────────────────────────────┐
 │                      IDE LAYER                              │
-│    VS Code + Cline v3.80 (supervision, approval)            │
-│    Cline Kanban v0.1.64 (multi-agent task board)            │
-│    .clinerules/ (knowledge layer — read every session)      │
+│    VS Code + OpenCode (MIT, v1.3+)                          │
+│    Plan mode: read-only analysis (Tab to toggle)            │
+│    Build mode: file edits + bash with permission gates      │
+│    .clinerules/ loaded via opencode.json instructions       │
+│    memory-bank/ loaded for persistent session context       │
+│    .opencode/agents/ for custom agent definitions           │
 └─────────────────────────┬───────────────────────────────────┘
                           │
 ┌─────────────────────────▼───────────────────────────────────┐
@@ -197,7 +187,6 @@ and `OLLAMA_API_KEY=ollama` in `.env`. Architecture is already provider-agnostic
 
 [TOOLS — not in production path]
   OpenJarvis (localhost:8080) → hardware metrics, trace logging
-  Cline Kanban (localhost:3484) → agent task orchestration UI
 ```
 
 ---
@@ -206,18 +195,19 @@ and `OLLAMA_API_KEY=ollama` in `.env`. Architecture is already provider-agnostic
 
 | Component | License | Status | Role |
 |---|---|---|---|
-| Cline / Cline Kanban | Apache 2.0 | ✅ Active | IDE agent + orchestration UI |
-| ClineAgent | Apache 2.0 (our code) | ✅ Active | Real LLM agent |
+| OpenCode | MIT | ✅ Active | IDE agent — TUI + VS Code integration |
+| ClineAgent | Apache 2.0 (our code) | ✅ Active | Real LLM agent (Python class) |
 | AgentConfig | Apache 2.0 (our code) | ✅ Active | Provider-agnostic config |
 | SwarmFactory | Apache 2.0 (our code) | ✅ Active | Agent wiring |
 | httpx | MIT | ✅ Active | Async HTTP client |
 | pyyaml | MIT | ✅ Active | YAML config loading |
 | python-dotenv | MIT | ✅ Active | .env loading |
-| Superpowers | MIT | ⚠️ Audit required | Skills framework candidate |
 | OpenJarvis | Apache 2.0 | ⚠️ Partial | Hardware metrics (stream_options issue) |
 | LangGraph | MIT | ⬜ Deferred | Phase 3 if DAG complexity requires it |
 | SWE-agent | MIT | ⚠️ Pending audit | ACI pattern for Coder agent |
 | AG2 sandbox | MIT+Apache 2.0 | 🚫 Blocked | License audit incomplete |
+| ~~Cline~~ | ~~Apache 2.0~~ | ❌ Removed | Replaced by OpenCode (May 2026) |
+| ~~Cline Kanban~~ | ~~Apache 2.0~~ | ❌ Removed | Multi-agent owned by SwarmOrchestrator |
 
 ---
 
@@ -239,8 +229,8 @@ host = "127.0.0.1"
 port = 8080
 ```
 
-**Known issue:** Cline → Jarvis connection fails (HTTP 422 — `stream_options`
-field incompatibility). Jarvis API works correctly via direct curl. Deferred.
+**Known issue:** OpenCode → Jarvis connection not yet tested (Cline had
+stream_options HTTP 422 incompatibility). Deferred.
 
 **To start:**
 ```bash
@@ -256,15 +246,17 @@ cd C:/Algoritmi/tools/openjarvis && uv run jarvis serve  # Terminal 2
 2. **Gateway / Load Balancer** — not needed until 2+ physical nodes
 3. **Fine-tuning pipeline** — Phase 4
 4. **AG2 sandbox** — blocked pending transitive license audit
-5. **LangGraph DAG** — evaluate in Phase 3 if Cline Kanban insufficient
-6. **SuperMemory** — persistent cross-session agent memory (Phase 3)
+5. **LangGraph DAG** — evaluate in Phase 3 if needed
+6. **SuperMemory** — external service; Memory Bank pattern implemented natively
 7. **Cypress** — UI testing agent (Phase 3, web projects only)
+8. **OpenCode client/server mode** — Phase 3+ for remote access use case
 
 ---
 
 *Document approved by:* Michele Bisignano, Alessandro Campani
 *Phase 2.A completed:* April 2026
 *Phase 2.B started:* April 2026
+*Phase 2.B tooling update:* May 2026 (OpenCode migration)
 *Prerequisite document:* SF-ARCH-001 v1.4
 *Next review:* Phase 2.B KPI validation
-*Supersedes:* SF-ARCH-002 v1.2
+*Supersedes:* SF-ARCH-002 v1.3
