@@ -25,11 +25,8 @@ SwarmForge/
 │       │   └── SKILL.md
 │       ├── contract-architect/
 │       │   └── SKILL.md
-│       ├── find-skills/
-│       │   └── SKILL.md
 │       └── reviewer/
 │           └── SKILL.md
-├── .cline/
 ├── .clinerules/
 │   ├── 00-vibe-architect.md
 │   ├── 01-token-economy.md
@@ -83,6 +80,7 @@ SwarmForge/
 │       └── d38f6026-539b-492f-bdc4-b200150945ca.json
 ├── docs/
 │   ├── architecture/
+│   │   ├── ai_structure.md
 │   │   ├── orchestrator-hierarchy.md
 │   │   ├── phase-1-stack.md
 │   │   ├── phase-2-stack.md
@@ -140,31 +138,25 @@ SwarmForge/
 │   │   └── stubs.py
 │   ├── ai/
 │   │   ├── __init__.py
-│   │   ├── ai_structure.md
 │   │   ├── core/
 │   │   │   ├── __init__.py
 │   │   │   └── ai_model.py
 │   │   ├── image/
-│   │   ├── text/
-│   │   │   ├── __init__.py
-│   │   │   ├── api/
-│   │   │   ├── text_model.py
-│   │   │   └── web/
-│   │   │       ├── __init__.py
-│   │   │       ├── conversation_logger.py
-│   │   │       ├── providers/
-│   │   │       │   ├── __init__.py
-│   │   │       │   ├── chatgpt/
-│   │   │       │   │   └── chatgpt_web_model.py
-│   │   │       │   └── gemini/
-│   │   │       │       ├── __init__.py
-│   │   │       │       └── gemini_web_model.py
-│   │   │       └── web_text_model.py
-│   │   └── web/
-│   │       ├── examples/
-│   │       │   └── web_ai_examples.py
-│   │       └── tools/
-│   │           └── setup_browser_profile.py
+│   │   └── text/
+│   │       ├── __init__.py
+│   │       ├── api/
+│   │       ├── text_model.py
+│   │       └── web/
+│   │           ├── __init__.py
+│   │           ├── conversation_logger.py
+│   │           ├── providers/
+│   │           │   ├── __init__.py
+│   │           │   ├── chatgpt/
+│   │           │   │   └── chatgpt_web_model.py
+│   │           │   └── gemini/
+│   │           │       ├── __init__.py
+│   │           │       └── gemini_web_model.py
+│   │           └── web_text_model.py
 │   └── orchestrator/
 │       ├── __init__.py
 │       ├── aggregator.py
@@ -176,7 +168,6 @@ SwarmForge/
 │       └── selector.py
 ├── tests/
 │   ├── agents/
-│   │   └── test_ai_automation.py
 │   ├── integration/
 │   │   ├── __init__.py
 │   │   └── test_swarm_integration.py
@@ -185,8 +176,7 @@ SwarmForge/
 │       ├── test_factory.py
 │       ├── test_orchestrator.py
 │       ├── test_registry.py
-│       ├── test_selector.py
-│       └── test_web_model.py
+│       └── test_selector.py
 ├── tools/
 │   ├── griffe/
 │   │   └── extract_contract_doc.py
