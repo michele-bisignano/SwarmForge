@@ -123,6 +123,10 @@ SwarmForge/
 ├── memory-bank/
 │   ├── activeContext.md
 │   ├── decisionLog.md
+│   ├── knowledge/
+│   │   ├── architecture.md
+│   │   ├── integration.md
+│   │   └── pitfalls.md
 │   ├── productContext.md
 │   └── progress.md
 ├── opencode.json
