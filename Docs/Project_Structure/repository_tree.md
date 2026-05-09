@@ -41,14 +41,17 @@ SwarmForge/
 │   └── caveman.md
 ├── .gitignore
 ├── .opencode/
+│   ├── .gitignore
 │   ├── agents/
 │   │   ├── caveman.md
 │   │   ├── class-coder.md
 │   │   ├── contract-architect.md
 │   │   └── reviewer.md
-│   └── commands/
-│       ├── lint.md
-│       └── run-test.md
+│   ├── commands/
+│   │   ├── lint.md
+│   │   └── run-test.md
+│   ├── package-lock.json
+│   └── package.json
 ├── .pytest_cache/
 │   ├── .gitignore
 │   ├── CACHEDIR.TAG
@@ -62,6 +65,8 @@ SwarmForge/
 │   ├── .gitignore
 │   ├── 0.15.11/
 │   │   └── 8051445607315972243
+│   ├── 0.15.12/
+│   │   └── 7440439376083854418
 │   └── CACHEDIR.TAG
 ├── AGENTS.md
 ├── configs/
@@ -125,7 +130,6 @@ SwarmForge/
 ├── opencode.json
 ├── pyproject.toml
 ├── README.md
-├── setup_browser_profile.py
 ├── src/
 │   ├── __init__.py
 │   ├── agents/
@@ -141,21 +145,26 @@ SwarmForge/
 │   │   │   ├── __init__.py
 │   │   │   └── ai_model.py
 │   │   ├── image/
-│   │   └── text/
-│   │       ├── __init__.py
-│   │       ├── api/
-│   │       ├── text_model.py
-│   │       └── web/
-│   │           ├── __init__.py
-│   │           ├── conversation_logger.py
-│   │           ├── providers/
-│   │           │   ├── __init__.py
-│   │           │   ├── chatgpt/
-│   │           │   │   └── chatgpt_web_model.py
-│   │           │   └── gemini/
-│   │           │       ├── __init__.py
-│   │           │       └── gemini_web_model.py
-│   │           └── web_text_model.py
+│   │   ├── text/
+│   │   │   ├── __init__.py
+│   │   │   ├── api/
+│   │   │   ├── text_model.py
+│   │   │   └── web/
+│   │   │       ├── __init__.py
+│   │   │       ├── conversation_logger.py
+│   │   │       ├── providers/
+│   │   │       │   ├── __init__.py
+│   │   │       │   ├── chatgpt/
+│   │   │       │   │   └── chatgpt_web_model.py
+│   │   │       │   └── gemini/
+│   │   │       │       ├── __init__.py
+│   │   │       │       └── gemini_web_model.py
+│   │   │       └── web_text_model.py
+│   │   └── web/
+│   │       ├── examples/
+│   │       │   └── web_ai_examples.py
+│   │       └── tools/
+│   │           └── setup_browser_profile.py
 │   └── orchestrator/
 │       ├── __init__.py
 │       ├── aggregator.py
@@ -165,10 +174,9 @@ SwarmForge/
 │       ├── orchestrator.py
 │       ├── registry.py
 │       └── selector.py
-├── test_ai_automation.py
 ├── tests/
 │   ├── agents/
-│   │   └── test_cline_agent.py
+│   │   └── test_ai_automation.py
 │   ├── integration/
 │   │   ├── __init__.py
 │   │   └── test_swarm_integration.py
@@ -186,6 +194,5 @@ SwarmForge/
 │       ├── generate_tree.py
 │       ├── README.md
 │       └── setup_hook.py
-├── uv.lock
-└── web_ai_examples.py
+└── uv.lock
 ```

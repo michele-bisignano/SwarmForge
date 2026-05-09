@@ -1,10 +1,6 @@
 ﻿import logging
 import uuid
 from typing import TYPE_CHECKING
-<<<<<<< HEAD
-from src.orchestrator.models import Subtask, SubtaskResult, SwarmResult, TaskRequest
-=======
-
 from src.orchestrator.models import (
     Subtask,
     SubtaskResult,
@@ -13,7 +9,6 @@ from src.orchestrator.models import (
     TaskRequest,
 )
 
->>>>>>> 032da50fe25cadf3a963696b1e8f883e078bf4d0
 if TYPE_CHECKING:
     from src.agents.base import AbstractAgent
     from src.orchestrator.aggregator import AbstractResultAggregator
@@ -81,8 +76,7 @@ class SwarmOrchestrator:
             results.append(result)
             if result.status == SubtaskStatus.OK:
                 accumulated_context += (
-                    f"--- {result.agent_id} output ---\n"
-                    f"{result.content}\n\n"
+                    f"--- {result.agent_id} output ---\n{result.content}\n\n"
                 )
 
         return self._aggregator.aggregate(task_id, results)
