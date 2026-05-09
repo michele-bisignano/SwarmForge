@@ -40,6 +40,15 @@ SwarmForge/
 │   ├── 05-class-coder.md
 │   └── caveman.md
 ├── .gitignore
+├── .opencode/
+│   ├── agents/
+│   │   ├── caveman.md
+│   │   ├── class-coder.md
+│   │   ├── contract-architect.md
+│   │   └── reviewer.md
+│   └── commands/
+│       ├── lint.md
+│       └── run-test.md
 ├── .pytest_cache/
 │   ├── .gitignore
 │   ├── CACHEDIR.TAG
